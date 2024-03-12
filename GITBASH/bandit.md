@@ -8,7 +8,7 @@ Make a directory "sdstesters" in /tmp
 <b>Flag: NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL</b>
 
 ## level 1
-ssh bandit1@bandit.labs.overthewire.org -p 2220
+<code>ssh bandit1@bandit.labs.overthewire.org -p 2220</code>
 Previous flag is the password
 Enter the password.
 Since '-' is a file with a special character, we use <code>cat ./-</code>
@@ -16,7 +16,7 @@ Since '-' is a file with a special character, we use <code>cat ./-</code>
 
 ## level 2
 For spaces in the filename, use:
-cat "spaces in this filename"
+<code>cat "spaces in this filename"</code>
 <b>Flag: aBZ0W5EmUfAf7kHTQeOwd8bauFJ2lAiG</b>
 
 ## level 3
@@ -26,7 +26,7 @@ or
 <code>ls -a</code>
 after cding to inhere directory
 Then, 
-cat ".hidden"
+<code>cat ".hidden"</code>
 <b>Flag: 2EW7BBsr6aMMoJ2HjW067dm8EgX26xNe</b>
 
 ## level 4
@@ -46,50 +46,53 @@ Output:
 
 ## level 5
 we use the find command with only size flag
-find ~/inhere -size 1033c
+<code>find ~/inhere -size 1033c</code>
 'c' here means byte
 Output: /home/bandit5/inhere/maybehere07/.file2
 Then,
-cat /home/bandit5/inhere/maybehere07/.file2
+<code>cat /home/bandit5/inhere/maybehere07/.file2</code>
 <b>Flag: P4L4vucdmLnm8I7Vl7jG1ApGSfjYKqJU</b>
 
 ## level 6
-find / -user bandit7 -group bandit6 -size 33c
+<code>find / -user bandit7 -group bandit6 -size 33c</code>
 found in /var/lib/dpkg/info
 cd to directory
-cat bandit7.password
+<code>cat bandit7.password</code>
 <b>Flag: z7WtoNQU2XfjmMtWA8u5rN4vzqu4v99S</b>
 
 ## level 7
-grep -i "millionth" data.txt
+<code>grep -i "millionth" data.txt</code>
 Output: millionth	TESKZC0XvTetK0S9xNwm25STk5iWrBvP
 <b>Flag: TESKZC0XvTetK0S9xNwm25STk5iWrBvP</b>
 
 ## level 8
 Note: first trying only uniq command without sorting is not gonna work becauseit cannot cheeck for duplicate lines in different places
 We first sort all the data in the file and pipe it to the uniq command with a -u argument for a unique line
-sort data.txt | uniq -u
+<code>sort data.txt | uniq -u</code>
 <b>Flag: EN632PlfYiZbn3PhVK3XOGSlNInNE00t</b>
 
 ## level 9
-Use, strings data.txt | grep \"\=\=\=\=\=\=\=\=\"
+Use, 
+<code>strings data.txt | grep \"\=\=\=\=\=\=\=\=\"</code>
 Output:
+<pre>
 x\]T========== theG\)"
 ========== passwordk^
 ========== is
 ========== G7w8LIi6J3kTb8A7j9LgrywtEUlyyp6s
+</pre>
 <b>Flag: G7w8LIi6J3kTb8A7j9LgrywtEUlyyp6s</b>
 
 ## level 10
 The = sign in the end of the data.txt file tells us that it is base64 encoded
 we simply use the decoder
-base64 -d data.txt
+<code>base64 -d data.txt</code>
 Output: The password is 6zPeziLdR2RKNdNYFNb6nVCKzphlXHBM
 <b>Flag: 6zPeziLdR2RKNdNYFNb6nVCKzphlXHBM</b>
 
 ## level 11
 We do
-cat data.txt
+<code>cat data.txt</code>
 Copy the text and decode it on an internet rot13 decoder
 <a href="https://rot13.com">ROT13</a>
 Output: The password is JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv
@@ -97,28 +100,31 @@ Output: The password is JVNBBFSmZwKKOP0XbFXOoW8chDz5yVRv
 
 ## level 12
 copy data.txt from directory to temporary using
-cp data.txt tmp/sdstesters
+<code>cp data.txt tmp/sdstesters</code>
 Then, convert back the hex dump and pipe into cat
-xxd -r data.txt | cat data.compressed
+<code>xxd -r data.txt | cat data.compressed</code>
 Then check for compression algorithm using 
 file data.compressed
 rename using mv,
-mv data.gz
+<code>mv data.gz</code>
 after finding out that the file is a gzip compressed file
-{compression algorithm name} -d {filename}
+<code>{compression algorithm name} -d {filename}</code>
 Repeatedly do this to get the final file
 We come acaross bzip2, gunzip and tar while doing this.
 Same procedure applies to all
 for tar files,
-tar -xvf "filename"
+<code>tar -xvf "filename"</code>
 Finally, data8 is the 8th iteration
+<pre>
 The password is wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw
+</pre>
 <b>Flag: wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw</b>
 
 ## level 13
 Run,
-cat sshkey.private
+<code>cat sshkey.private</code>
 Then, 
+<pre>
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAxkkOE83W2cOT7IWhFc9aPaaQmQDdgzuXCv+ppZHa++buSkN+
 gg0tcr7Fw8NLGa5+Uzec2rEg0WmeevB13AIoYp0MZyETq46t+jk9puNwZwIt9XgB
@@ -146,32 +152,34 @@ qT1EvQKBgQDKm8ws2ByvSUVs9GjTilCajFqLJ0eVYzRPaY6f++Gv/UVfAPV4c+S0
 kAWpXbv5tbkkzbS0eaLPTKgLzavXtQoTtKwrjpolHKIHUz6Wu+n4abfAIRFubOdN
 /+aLoRQ0yBDRbdXMsZN/jvY44eM+xRLdRVyMmdPtP8belRi2E2aEzA==
 -----END RSA PRIVATE KEY-----
-
+</pre>
 Add this private key into a file called sshkey.private
 Then, change permissions for only owner read and write access using
-chmod 600 sshkey.private
+<code>chmod 600 sshkey.private</code>
 6-0-0 signifies 110-000-000 ie. rw-------
 This is required as servers do not accept compromised ssh keys with bad file permissions
 Then, log into the server using 
-ssh -i /path/to/sshkey.private bandit14@bandit.overthewire.org -p 2220
+<code>ssh -i /path/to/sshkey.private bandit14@bandit.overthewire.org -p 2220</code>
 
 Here, we run (within bandit14)
-cat /etc/bandit_pass/bandit14
+<code>cat /etc/bandit_pass/bandit14</code>
 <b>Flag: fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq</b>
 
 ## level 14
 Here, we run netcat to submit our flag to port 30000 on localhost using
-nc -N localhost 30000
+<code>nc -N localhost 30000</code>
 Output:
+<pre>
 fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq
 Correct!
 jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
+</pre>
 
 <b>Flag: jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt</b>
 
 ## level 15
 We first try to connect to localhost at 30001 using openssl
-openssl s_client -connect localhost:30001
+<code>openssl s_client -connect localhost:30001</code>
 s_client is a minimal client that can send and receive data using SSL/TLS
 Then, we paste the previous flag in the given prompt:
 Output:
@@ -185,21 +193,25 @@ References: <a href="https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client
 
 ## level 16
 
-We use nc -zv localhost 31000-32000 to scan the ports asked in the problem statement
+We use 
+<code>nc -zv localhost 31000-32000</code>
+to scan the ports asked in the problem statement
 Then, we note down the port numbers that are open:
--31046
--31518
--31691
--31790
--31960
+- 31046
+- 31518
+- 31691
+- 31790
+- 31960
 Since there are so little ports, we can brute force each of them by submitting our flag and trying to get the new one.
 This can be done by 
-openssl s_client -connect localhost:portnumber
+<code>openssl s_client -connect localhost:portnumber</code>
 and pasting our flag into this each time
 Port 31790 spoke SSL and the following output was obtained:
-
+<pre>
 JQttfApK4SeyHwDlI9SXGR50qclOAil1
 Correct!
+</pre>
+<pre>
 -----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
 imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
@@ -227,55 +239,61 @@ YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
 dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
 vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
 -----END RSA PRIVATE KEY-----
-
+</pre>
 closed
 
 To find the next flag, we login to bandit17 using this ssh key
-ssh -i ~/path/to/sshkey.private bandit17@bandit.labs.overthewire.org -p 2220
+<code>ssh -i ~/path/to/sshkey.private bandit17@bandit.labs.overthewire.org -p 2220</code>
 
-Flag: VwOSWtCA7lRKkTfbr2IDh6awj9RNZM5e
+<b>Flag: VwOSWtCA7lRKkTfbr2IDh6awj9RNZM5e</b>
 
 ## level 17
 We use the diff command to check for differences
-diff passwords.new passwords.old
+<code>diff passwords.new passwords.old</code>
 Output:
+<pre>
 42c42
 hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg
 p6ggwdNHncnmCNxuAt0KtKVq185ZU7AW
+</pre>
 We then test these two keys on the next server
 Upon testing, the key hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg is the correct one
 
-Flag: hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg
+<b>Flag: hga5tuuCLF6fFzUpnagiMN8ssu9LFrdg</b>
 
 ## level 18
 We run a command immediately after login and get it's output using the -t flag in ssh 
 We can hence do the following:
-ssh -t bandit18@bandit.labs.overthewire.org -p 2220 "cat readme"
+<code>ssh -t bandit18@bandit.labs.overthewire.org -p 2220 "cat readme"</code>
 Output:
+<pre>
 bandit18@bandit.labs.overthewire.org's password: 
 awhqfNnAbc1naukrpqDYcF95h7HoMTrC
 Connection to bandit.labs.overthewire.org closed.
+</pre>
 
-Flag: awhqfNnAbc1naukrpqDYcF95h7HoMTrC
+<b>Flag: awhqfNnAbc1naukrpqDYcF95h7HoMTrC</b>
 
 ## level 19
 We run the given setuid binary with arguments to print the password of the next level:
-./bandit20-do cat /etc/bandit_pass/bandit20
+<code>./bandit20-do cat /etc/bandit_pass/bandit20</code>
 
-Flag: VxCazJaVykI6W36BkBU0mJTCM8rR95XT
+<b>Flag: VxCazJaVykI6W36BkBU0mJTCM8rR95XT</b>
 
 ## level 20
 We first set up a listening server using netcat in the background using Unix Jobs in the background
 This job first listens on port 6969 and when there is a connection, it echos the password of the previous level
 This is done using:
-echo "VxCazJaVykI6W36BkBU0mJTCM8rR95XT" | nc -l 6969&
+<code>echo "VxCazJaVykI6W36BkBU0mJTCM8rR95XT" | nc -l 6969&</code>
 The & on the end tells the shell that it is a background process
 After this, we do 
-./* 6969 
-to send the request and check password in the binary
+<code>./* 6969</code>
+to send the request and check password in theV binary
 Output:
+<pre>
 Read: VxCazJaVykI6W36BkBU0mJTCM8rR95XT
 Password matches, sending next password
 NvEJF7oVjkddltPSrdKEFOllh9V1IBcq
+</pre>
 
-Flag: NvEJF7oVjkddltPSrdKEFOllh9V1IBcq
+<b>Flag: NvEJF7oVjkddltPSrdKEFOllh9V1IBcq</b>
