@@ -19,7 +19,7 @@ echo "        Generate and Manage GPG Keys fast               ";
 echo ""
 echo -e "${NC}"
 
-
+selected_id="None"
 numkeys=$(gpg --list-keys | awk '/^pub|^sec/{count++} END {print count}')
 echo ""
 echo "Number of GPG keys found: $numkeys"
@@ -27,7 +27,8 @@ echo ""
 
 
 optioner () {
-   echo -e "${BLUE}View GPG key IDs(${RED}v${BLUE}) | ${BLUE}Create a new GPG key(${RED}c${BLUE}) | ${BLUE}Delete a GPG key(${RED}d${BLUE}) | ${BLUE}GitHub options(${RED}g${BLUE}) | ${BLUE}Edit key data(${RED}e${BLUE}) | ${BLUE}Git options(${RED}b${BLUE}) | ${BLUE}Exit(${RED}q${BLUE})"
+   echo -e "${BLUE}View GPG key IDs / select(${RED}v${BLUE}) | ${BLUE}Create a new GPG key(${RED}c${BLUE}) | ${BLUE}Delete a GPG key(${RED}d${BLUE}) | ${BLUE}GitHub options(${RED}g${BLUE}) | ${BLUE}Edit key data(${RED}e${BLUE}) | ${BLUE}Git options(${RED}b${BLUE}) | ${BLUE}Exit(${RED}q${BLUE})"
+   echo -e "Selected key: ${RED}$selected_id${NC}"
    read option
    if [ "$option" = "v" ]; then
        echo -e "${GREEN}"
@@ -78,9 +79,7 @@ gitOptions () {
          read gitOption
             if [ "$gitOption" = "1" ]; then
                 echo "Adding a GPG key to your Git account (Global)"
-                echo "Enter the ID/email of the key you want to add"
-                read id
-                git config --global user.signingkey $id
+                git config --global user.signingkey $selected_id
                 echo " Do you want signed commits at all times? (y/n)"
                 read answer
                 if [ "$answer" = "y" ]; then
@@ -93,10 +92,8 @@ gitOptions () {
                 echo ""
             elif [ "$gitOption" = "2" ]; then
                 echo "Adding a GPG key to your Git account (Local): Pleaase have a repository open in the terminal"
-                echo "Enter the ID/email of the key you want to add"
-                read id
                 echo -e "${YELLOW}"
-                git config --local user.signingkey $id
+                git config --local user.signingkey $selected_id
                 echo " Do you want signed commits at all times? (y/n)"
                 read answer
                 if [ "$answer" = "y" ]; then
@@ -116,12 +113,10 @@ gitOptions () {
 }
 
 editor () {
-    echo "Editing options"
-    echo "Enter the ID/email of the key you want to edit"
-    read id
+    echo "Editing key"
     echo "Editing public key"
     echo -e "${YELLOW}"
-    gpg --edit-key $id
+    gpg --edit-key $selected_id
     echo -e "${NC}"
     optioner
 }
@@ -133,12 +128,8 @@ github () {
     echo "Do you want to add a GPG key to your GitHub account? (y/n)"
         read answer
         if [ "$answer" = "y" ]; then
-            echo -e "${BLUE}Adding a GPG key to your GitHub account"
-            echo -e "${NC}\n"
-            echo "Enter the ID of the key you want to add"
-                read id
             echo -e "${YELLOW}\n"
-            gpg --armor --export $id
+            gpg --armor --export $selected_id
             echo -e "${NC}\n"
             echo "Copy the key above and paste it in your GitHub account"
             echo -e "\n"
@@ -164,14 +155,25 @@ viewer () {
        ids=$(gpg --list-keys --keyid-format=long | awk -F'[ /]' '/^pub/{print $5}' )
        emails=$(gpg --list-keys --keyid-format=long | awk -F'[ /]' '/^uid/{print $NF}' )
        echo -e "${RED}"
-       paste -d ' ' <(echo "$ids") <(echo "$emails")
+        echo "Please select an ID:"
+        select ID in "${ids[@]}"; do
+            echo "You selected ID: $ID"
+            selected_id=$ID
+            break
+        done
        echo -e "${NC}"
    elif [ "$answer" = "2" ]; then
        echo "Viewing GPG keys (private)"
        ids=$(gpg --list-secret-keys --keyid-format=long | awk -F'[ /]' '/^sec/{print $5}' )
        emails=$(gpg --list-keys --keyid-format=long | awk -F'[ /]' '/^uid/{print $NF}' )
        echo -e "${RED}"
-       paste -d ' ' <(echo "$ids") <(echo "$emails")
+       echo -e "${RED}"
+       echo "Please select an ID:"
+       select ID in "${ids[@]}"; do
+         echo "You selected ID: $ID"
+         selected_id=$ID
+         break
+         done
        echo -e "${NC}"
        else
            echo "Invalid option"
@@ -183,20 +185,18 @@ viewer () {
 
 deleter () {
    echo -e "Deleting a GPG key\n"
-   echo "Enter the ID/Email of the key you want to delete"
-   read id
    echo "Delete Options: (1)Only Public Key | (2)Only Private Key | (3)Both"
    read deleteOption
    if [ "$deleteOption" = "1" ]; then
        echo "Deleting public key"
-       yes | gpg --delete-key $id
+       yes | gpg --delete-key $selected_id
    elif [ "$deleteOption" = "2" ]; then
        echo "Deleting private key"
-       yes | gpg --delete-secret-key $id
+       yes | gpg --delete-secret-key $selected_id
    elif [ "$deleteOption" = "3" ]; then
        echo "Deleting both keys"
-       yes | gpg --delete-secret-key $id
-       yes | gpg --delete-key $id
+       yes | gpg --delete-secret-key $selected_id
+       yes | gpg --delete-key $selected_id
    else
        echo "Invalid option"
        optioner
