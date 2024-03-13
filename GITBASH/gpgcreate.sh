@@ -183,14 +183,14 @@ deleter () {
    read deleteOption
    if [ "$deleteOption" = "1" ]; then
        echo "Deleting public key"
-       gpg --delete-key $email
+       yes | gpg --delete-key $email
    elif [ "$deleteOption" = "2" ]; then
        echo "Deleting private key"
-       gpg --delete-secret-key $email
+       yes | gpg --delete-secret-key $email
    elif [ "$deleteOption" = "3" ]; then
        echo "Deleting both keys"
-       gpg --delete-secret-key $email
-       gpg --delete-key $email
+       yes | gpg --delete-secret-key $email
+       yes | gpg --delete-key $email
    else
        echo "Invalid option"
        optioner
