@@ -27,7 +27,7 @@ echo ""
 
 
 optioner () {
-   echo -e "${BLUE}View GPG keys(${RED}v${BLUE}) | ${BLUE}Create a new GPG key(${RED}c${BLUE}) | ${BLUE}Delete a GPG key(${RED}d${BLUE}) | ${BLUE}GitHub specific options(${RED}g${BLUE}) | ${BLUE}Edit Options(${RED}e${BLUE}) | ${BLUE}Exit(${RED}q${BLUE})"
+   echo -e "${BLUE}View GPG keys(${RED}v${BLUE}) | ${BLUE}Create a new GPG key(${RED}c${BLUE}) | ${BLUE}Delete a GPG key(${RED}d${BLUE}) | ${BLUE}GitHub specific options(${RED}g${BLUE}) | ${BLUE}Edit Options(${RED}e${BLUE}) | ${BLUE}Git options(${RED}b${BLUE}) | ${BLUE}Exit(${RED}q${BLUE})"
    read option
    if [ "$option" = "v" ]; then
        echo -e "${GREEN}"
@@ -55,6 +55,11 @@ optioner () {
         editor
         echo -e "${NC}"
         optioner
+    elif [ "$option" = "b" ]; then
+        echo -e "${GREEN}"
+        gitOptions
+        echo -e "${NC}"
+        optioner
    else
        echo -e "${GREEN}"
        echo "Invalid option"
@@ -63,6 +68,51 @@ optioner () {
 
 
    fi
+}
+
+gitOptions () {
+    echo "Do you want to add a GPG key to your Git account? (y/n)"
+    read answer
+    if [ "$answer" = "y" ]; then
+       echo "Global(1) | Local(2) | Back(b)"
+         read gitOption
+            if [ "$gitOption" = "1" ]; then
+                echo "Adding a GPG key to your Git account (Global)"
+                echo "Enter the email/Name of the key you want to add"
+                read email
+                git config --global user.signingkey $email
+                echo " Do you want signed commits at all times? (y/n)"
+                read answer
+                if [ "$answer" = "y" ]; then
+                    git config --global commit.gpgsign true
+                else
+                    git config --global commit.gpgsign false
+                fi
+                echo ""
+                echo "GPG key added to Git account (Global)"
+                echo ""
+            elif [ "$gitOption" = "2" ]; then
+                echo "Adding a GPG key to your Git account (Local): Pleaase have a repository open in the terminal"
+                echo "Enter the email/Name of the key you want to add"
+                read email
+                echo -e "${YELLOW}"
+                git config --local user.signingkey $email
+                echo " Do you want signed commits at all times? (y/n)"
+                read answer
+                if [ "$answer" = "y" ]; then
+                    git config --local commit.gpgsign true
+                else
+                    git config --local commit.gpgsign false
+                fi
+                echo ""
+                echo "GPG key added to Git account (Global)"
+                echo ""
+            else
+                optioner
+            fi
+    else
+        optioner
+    fi
 }
 
 editor () {
