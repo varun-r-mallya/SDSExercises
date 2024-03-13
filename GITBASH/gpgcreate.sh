@@ -1,10 +1,12 @@
 #!/bin/bash
 
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-BLUE='\033[0;34m'
+BLUE='\033[0;36m'
 NC='\033[0m'
 YELLOW='\033[1;33m'
+
 
 echo -e "${YELLOW}"
 echo "   __________  ______                           __     ";
@@ -17,70 +19,150 @@ echo "        Generate and Manage GPG Keys fast               ";
 echo ""
 echo -e "${NC}"
 
-numkeys="0"   
+
 numkeys=$(gpg --list-keys | awk '/^pub|^sec/{count++} END {print count}')
 echo ""
 echo "Number of GPG keys found: $numkeys"
 echo ""
 
-optioner () {
-    echo -e "${GREEN}View GPG keys(${RED}v${GREEN}) | ${GREEN}Create a new GPG key(${RED}c${GREEN}) | ${GREEN}Delete a GPG key(${RED}d${GREEN}) | ${GREEN}Exit(${RED}e${GREEN})"
-    read option
-    if [ "$option" = "v" ]; then
-        echo -e "${BLUE}"
-        viewer
-        echo -e "${NC}"
-    elif [ "$option" = "c" ]; then
-        echo -e "${BLUE}"
-        keygen
-        echo -e "${NC}"
-    elif [ "$option" = "d" ]; then
-        echo -e "${BLUE}"
-        deleter
-        echo -e "${NC}"
-    elif [ "$option" = "e" ]; then
-        echo -e "${BLUE}"
-        echo "Exiting"
-        echo -e "${NC}"
-        exit
-    else
-        echo -e "${BLUE}"
-        echo "Invalid option"
-        echo -e "${NC}"
 
-    fi
+optioner () {
+   echo -e "${BLUE}View GPG keys(${RED}v${BLUE}) | ${BLUE}Create a new GPG key(${RED}c${BLUE}) | ${BLUE}Delete a GPG key(${RED}d${BLUE}) | ${BLUE}GitHub specific options(${RED}g${BLUE}) | ${BLUE}Edit Options(${RED}e${BLUE}) | ${BLUE}Exit(${RED}q${BLUE})"
+   read option
+   if [ "$option" = "v" ]; then
+       echo -e "${GREEN}"
+       viewer
+       echo -e "${NC}"
+   elif [ "$option" = "c" ]; then
+       echo -e "${GREEN}"
+       keygen
+       echo -e "${NC}"
+   elif [ "$option" = "d" ]; then
+       echo -e "${GREEN}"
+       deleter
+       echo -e "${NC}"
+   elif [ "$option" = "g" ]; then
+         echo -e "${GREEN}"
+         github
+         echo -e "${NC}"
+   elif [ "$option" = "q" ]; then
+       echo -e "${GREEN}"
+       echo "Exiting"
+       echo -e "${NC}"
+       exit
+    elif [ "$option" = "e" ]; then
+        echo -e "${GREEN}"
+        editor
+        echo -e "${NC}"
+        optioner
+   else
+       echo -e "${GREEN}"
+       echo "Invalid option"
+       echo -e "${NC}"
+       optioner
+
+
+   fi
+}
+
+editor () {
+    echo "Editing options"
+    echo "Enter email ID or Name"
+    read email
+    echo "Editing public key"
+    echo -e "${YELLOW}"
+    gpg --edit-key $email
+    echo -e "${NC}"
+    optioner
+}
+
+github () {
+    echo -e "${BLUE}GitHub specific options(${RED}g${BLUE}) | ${BLUE}Back(${RED}b${BLUE})"
+    read githubOption
+    echo -e "${GREEN}"
+    echo "Do you want to add a GPG key to your GitHub account? (y/n)"
+        read answer
+        if [ "$answer" = "y" ]; then
+            echo -e "${BLUE}Adding a GPG key to your GitHub account"
+            echo -e "${NC}\n"
+            echo "Enter the email/Name of the key you want to add"
+                read email
+            echo -e "${YELLOW}\n"
+            gpg --armor --export $email
+            echo -e "${NC}\n"
+            echo "Copy the key above and paste it in your GitHub account"
+            echo -e "\n"
+        else
+            optioner
+        fi
+         echo -e "${NC}"
+    
 }
 
 keygen () {
-    echo "Creating a new GPG key"
-    gpg --full-generate-key
-    optioner
+   echo "Creating a new GPG key"
+   gpg --full-generate-key
+   optioner
 }
+
 
 viewer () {
-    echo "Viewing GPG keys"
-    gpg --list-keys
-    optioner
+   echo "Do you want to view public(1) or private(2) keys?"
+   read answer
+   if [ "$answer" = "1" ]; then
+       echo "Viewing GPG keys (public)"
+       emails=$(gpg --list-keys | awk '/^uid/{print $NF}')
+       echo -e "$emails\n"
+   elif [ "$answer" = "2" ]; then
+       echo "Viewing GPG keys (private)"
+       emails=$(gpg --list-secret-keys | awk '/^uid/{print $NF}')
+       echo -e "$emails\n"
+       else
+           echo "Invalid option"
+           optioner
+   fi
+   optioner
 }
+
 
 deleter () {
-    echo "Deleting a GPG key"
-    echo "Enter the email of the key you want to delete"
-    read email
-    gpg --delete-key $email
-    optioner
+   echo -e "Deleting a GPG key\n"
+   echo "Enter the email of the key you want to delete"
+   read email
+   echo "Delete Options: (1)Only Public Key | (2)Only Private Key | (3)Both"
+   read deleteOption
+   if [ "$deleteOption" = "1" ]; then
+       echo "Deleting public key"
+       gpg --delete-key $email
+   elif [ "$deleteOption" = "2" ]; then
+       echo "Deleting private key"
+       gpg --delete-secret-key $email
+   elif [ "$deleteOption" = "3" ]; then
+       echo "Deleting both keys"
+       gpg --delete-secret-key $email
+       gpg --delete-key $email
+   else
+       echo "Invalid option"
+       optioner
+   fi
+   optioner
 }
 
-if [ num_keys != "0" ]; then
-    optioner
+
+if [ "$numkeys" = "" ]; then  
+   echo "Do you want to create a new GPG key? (y/n)"
+   read answer
+   if [ "$answer" = "y" ]; then
+       echo "Creating a new GPG key"
+       keygen
+       optioner
+   else
+       echo "Exiting"
+   fi   
 else
-    echo "Do you want to create a new GPG key? (y/n)"
-    read answer
-    if [ "$answer" = "y" ]; then
-        echo "Creating a new GPG key"
-        keygen
-        optioner
-    else
-        echo "Exiting"
-    fi    
+     optioner
 fi
+
+
+
+
