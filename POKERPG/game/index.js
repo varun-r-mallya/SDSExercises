@@ -1,5 +1,6 @@
+import { Music } from './music.js';
+import { Instructions } from './Instructions.js'
 var startButton = document.querySelector('button');
-var GameCanvas = document.createElement('canvas');
 var GameArea = {
     canvas: document.createElement('canvas'),
     start: function() {
@@ -10,6 +11,12 @@ var GameArea = {
     }
 }
 
+
 startButton.addEventListener('click', function() {
     GameArea.start();
+    Music.playOpening();                              //TODO - uncomment later to give music
+    Instructions.start(GameArea.canvas);
+    //MapRenderer.start(GameArea.canvas);
+    
 });
+
