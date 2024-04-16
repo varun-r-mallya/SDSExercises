@@ -54,7 +54,7 @@ export var FightMap = {
     mapTextRender: function(canvas) {
         var context = canvas.getContext('2d');
         let text1 = new Image();
-        text1.src = '/game/assets/movearound.png';
+        text1.src = '/game/assets/movearound2.png';
         text1.onload = function() {
             context.drawImage(text1, 510, 10);
         }

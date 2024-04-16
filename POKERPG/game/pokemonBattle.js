@@ -6,9 +6,11 @@ export var pokemonBattle = {
     let screen = new Image();
     let screen_sad = new Image();
     let BattleChoice = new Image();
+    let wild = new Image();
     BattleChoice.src = '/game/assets/battle.png';
     screen.src = '/game/assets/screen1.png';
     screen_sad.src = '/game/assets/screen_sad.png';
+    wild.src = '/game/assets/wild.png';
     
     let randomChance = Math.floor(Math.random() * 10) + 1;          //reset value to 10
     if (randomChance === 1) {
@@ -23,12 +25,16 @@ export var pokemonBattle = {
                     context.drawImage(pokemon, 600, 115, 250, 250);
                     pokemonBattle.youFound(data, context);
                     context.drawImage(BattleChoice, 547, 446);
+                    context.fillStyle = 'black';
+                    context.drawImage(wild, 510, 10);
+                    context.font = '20px "Press Start 2P"';
+                    context.fillText(`${data.name}`, 650, 50);
                 }
-            window.addEventListener('keydown', function(event) {   
+            let keydownHandler2 = (function(event) {   
                 if(event.key.toLowerCase() === 'y'){
                     localStorage.setItem('vsData', JSON.stringify(data));
-                    battleMaker.start(canvas);
                     window.removeEventListener('keydown', keydownHandler);
+                    battleMaker.start(canvas, keydownHandler2);
                 }
                 else{
                     screen_sad.onload = function() {
@@ -37,7 +43,7 @@ export var pokemonBattle = {
                     }
                 }
             });
-            
+            window.addEventListener('keydown', keydownHandler2);   
             });
     }
     else{
