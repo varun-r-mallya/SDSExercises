@@ -19,6 +19,26 @@
     <footer>
       <p>&copy; 2022 Varun R Mallya | Made with ❤️ | <a href="https://www.github.com/varun-r-mallya">GitHub</a></p>
     </footer>
-	<script src="game/index.js" type="module" ></script>
+  <script src="game/index.js" type="module" ></script>
+    <script>
+      function preloadImages() {
+        const images = [
+          "./game/assets/logo.svg",
+          "./game/assets/start.png",
+          "./game/assets/battle.png",
+          "./game/assets/pokemon.png",
+          "./game/assets/character.png",
+          "./game/assets/instructions.png",
+          "favicon.png"
+        ];
+
+        images.forEach((image) => {
+          const img = new Image();
+          img.src = image;
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", preloadImages);
+    </script>
   </body>
-</html> 
+</html>
