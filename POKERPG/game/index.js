@@ -1,5 +1,7 @@
 import { Music } from './music.js';
 import { Instructions } from './Instructions.js'
+import { starterPokemon } from './starterPokemon.js';
+import { battleMaker } from './battleMaker.js';
 var startButton = document.querySelector('button');
 var GameArea = {
     canvas: document.createElement('canvas'),
@@ -15,8 +17,10 @@ var GameArea = {
 startButton.addEventListener('click', function() {
     GameArea.start();
     Music.playOpening();                              //TODO - uncomment later to give music
-    Instructions.start(GameArea.canvas);
-    //MapRenderer.start(GameArea.canvas);
+    let activation = localStorage.setItem('activation', true);        //TODO -uncomment 
+    Instructions.start(GameArea.canvas, activation);                  //TODO -uncomment
+    // starterPokemon.start(GameArea.canvas);                          //TODO -uncomment
+    // battleMaker.start(GameArea.canvas);
     
 });
 
