@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+
+}
+canvas {
+    border: 1px solid #d3d3d3;
+    background-color: #f1f1f1;      /*for testing only*/
+
+}
+#mainArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 10%;
+}
+
+#startbutton {
+    border: none;
+    background-color: none;
+}
+
+h1{
+    margin: 0;
+    padding: 1%;
+    background: linear-gradient(to right, white, red);
+    align-self: center;
+}
+
+footer{
+    background: linear-gradient(to right, white, red);
+    text-align: center;
+    padding: 1%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
