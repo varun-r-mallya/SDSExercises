@@ -12,6 +12,7 @@ export var FightMap = {
         Music.stopOpening();
         Music.playSearch();
         FightMap.drawScene(canvas, pokemonData);
+        return;
     },
     drawScene: function(canvas, pokemonData) {
         var context = canvas.getContext('2d');

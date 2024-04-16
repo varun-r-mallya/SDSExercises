@@ -1,4 +1,6 @@
 import { Music } from './music.js';
+import {lose} from './lose.js';
+import {win} from './win.js';
 export var realBattle = {
     myHP: 100,
     oppHP: 100,
@@ -16,9 +18,9 @@ export var realBattle = {
         }
         this.hpRenderer(canvas, this.myHP, this.oppHP);
         let keydownHandler = null;
-        this.moveDeciderMy(pokemonData, canvas, keydownHandler, pokemonData, vsData);
+        this.moveDeciderMy(pokemonData, vsData, canvas, keydownHandler);
     },
-    moveDeciderMy: function(pokemonData, canvas, keydownHandler, pokemonData, vsData) {
+    moveDeciderMy: function(pokemonData, vsData, canvas, keydownHandler) {
         let moves = pokemonData.moves;
         let move1 = new Image();
         let move2 = new Image();
@@ -52,48 +54,50 @@ export var realBattle = {
         keydownHandler = function(event) {
             if(event.key.toLowerCase() === 'a'){
                 let myMove = moves[0].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'b'){
                 let myMove = moves[1].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'c'){
                 let myMove = moves[2].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'd'){
                 let myMove = moves[3].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);    
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);    
             }
             if(event.key.toLowerCase() === 'e'){
                 let myMove = moves[4].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'f'){
                 let myMove = moves[5].move.name;
-                let oppMove = this.moveDeciderVs(pokemonData);
-                this.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                let oppMove = realBattle.moveDeciderVs(vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
 
         };
         window.addEventListener('keydown', keydownHandler);
     },
-    moveDeciderVs: function(pokemonData) {
-        let moves = pokemonData.moves;
+    moveDeciderVs: function(vsData) {
+        let moves = vsData.moves;
         let move = moves[Math.floor(Math.random() * moves.length)];
-        return move;
+        return move.move.name;
     },
     hpRenderer: function(canvas){
         var myHPBar = new Image();
         var oppHPBar = new Image();
         var context = canvas.getContext('2d');
         switch (true) {
+            case this.myHP <= 0:
+            myHPBar.src = 'game/assets/hp0.png';
             case this.myHP <= 10:
             myHPBar.src = 'game/assets/hp10.png';
             break;
@@ -115,6 +119,8 @@ export var realBattle = {
         }
 
         switch (true) {
+            case this.myHP <= 0:
+            oppHPBar.src = 'game/assets/hp0.png';
             case this.oppHP <= 10:
             oppHPBar.src = 'game/assets/hp10.png';
             break;
@@ -141,17 +147,31 @@ export var realBattle = {
 
     },
     moveResolver: function(myMove, oppMove, canvas, keydownHandler) {
-        
-        if(myHP <= 0){
+        console.log(this.myHP, this.oppHP, myMove, oppMove);
+        myMove.length > oppMove.length ? this.oppHP -= 10 : this.myHP -= 10;
+        let context = canvas.getContext('2d');
+        context.fillStyle = 'black';
+        context.font = '18px "Press Start 2P"';
+        context.clearRect(0, 0, 600, 150);
+        context.fillText(`You used ${myMove}`, 50, 50);
+        context.fillText(`Opponent used ${oppMove}`, 50, 100);
+        let pokeball = new Image();
+        pokeball.src = 'game/assets/pokeball.png';
+        pokeball.onload = function() {
+            context.drawImage(pokeball, 20, 150, 125, 125);
+        }
+        if(this.myHP <= 0){
+            Music.stopBattle();
             Music.playGameOver();
             window.removeEventListener('keydown', keydownHandler);
-            alert('You lost!');
+            lose.lose(canvas);
             return;
         }
-        if(oppHP <= 0){
+        if(this.oppHP <= 0){
+            Music.stopBattle();
             Music.playVictory();
             window.removeEventListener('keydown', keydownHandler);
-            alert('You won!');
+            win.win(canvas);
             return;
         }
         this.hpRenderer(canvas);
