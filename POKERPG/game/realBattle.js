@@ -5,6 +5,10 @@ export var realBattle = {
     myHP: 100,
     oppHP: 100,
     start: function(canvas, pokemonData, vsData) {
+        Music.stopGameOver();
+        Music.stopStarter();
+        Music.stopOpening();
+
         var context = canvas.getContext('2d');
         let myPokemon = new Image();
         let vsPokemon = new Image();
@@ -19,6 +23,7 @@ export var realBattle = {
         this.hpRenderer(canvas, this.myHP, this.oppHP);
         let keydownHandler = null;
         this.moveDeciderMy(pokemonData, vsData, canvas, keydownHandler);
+        return;
     },
     moveDeciderMy: function(pokemonData, vsData, canvas, keydownHandler) {
         let moves = pokemonData.moves;
@@ -85,6 +90,7 @@ export var realBattle = {
 
         };
         window.addEventListener('keydown', keydownHandler);
+        return;
     },
     moveDeciderVs: function(vsData) {
         let moves = vsData.moves;
@@ -144,6 +150,7 @@ export var realBattle = {
             context.drawImage(myHPBar, 50, 500, 300, 30);
             context.drawImage(oppHPBar, 600, 280, 300, 30);
         }
+        return;
 
     },
     moveResolver: function(myMove, oppMove, canvas, keydownHandler) {
@@ -161,19 +168,20 @@ export var realBattle = {
             context.drawImage(pokeball, 20, 150, 125, 125);
         }
         if(this.myHP <= 0){
-            Music.stopBattle();
             Music.playGameOver();
+            Music.stopBattle();
             window.removeEventListener('keydown', keydownHandler);
             lose.lose(canvas);
             return;
         }
         if(this.oppHP <= 0){
-            Music.stopBattle();
             Music.playVictory();
+            Music.stopBattle();
             window.removeEventListener('keydown', keydownHandler);
             win.win(canvas);
             return;
         }
         this.hpRenderer(canvas);
+        return;
     },
 }

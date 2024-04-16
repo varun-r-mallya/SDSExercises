@@ -39,9 +39,7 @@ export var pokemonFind = {
         context.drawImage(screen, 520, 110);
         context.drawImage(screen_sad, 520, 120);
     }
-    if(!activation){
-        return;
-    }
+    return;
     },
     youFound: function(data, context) {
         let pokemonName = data.name;

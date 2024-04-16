@@ -29,3 +29,12 @@ h1{
     background: linear-gradient(to right, white, red);
     align-self: center;
 }
+
+footer{
+    background: linear-gradient(to right, white, red);
+    text-align: center;
+    padding: 1%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
