@@ -32,6 +32,7 @@ export var pokemonBattle = {
                 }
             let keydownHandler2 = (function(event) {   
                 if(event.key.toLowerCase() === 'y'){
+                    localStorage.setItem('vsData', "");
                     localStorage.setItem('vsData', JSON.stringify(data));
                     window.removeEventListener('keydown', keydownHandler);
                     battleMaker.start(canvas, keydownHandler2);
