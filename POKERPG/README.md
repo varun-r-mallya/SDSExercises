@@ -13,9 +13,10 @@
 1. Click on the title screen Pokeball.
 2. Read the Instructions
 - Summary:
-  a. Use Enter whenever prompted. Eg: To move ahead     from this screen.
-  b. Use arrow keys to navigate on maps.
-  c. Use X to select starter Pokemon
-  d. Use A....F keys to select moves.
+- Use Enter whenever prompted. Eg: To move ahead     from this screen.
+- Use arrow keys to navigate on maps.
+- Use X to select starter Pokemon
+- Use A....F keys to select moves.
+
 3. Play the Game!!
 4. Increase score as much as possible
