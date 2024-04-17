@@ -3,7 +3,7 @@ export var Instructions = {
     start: function(canvas, activation) {
         var context = canvas.getContext('2d');
         var instructions = new Image();
-        instructions.src = '/game/assets/instructions.png';
+        instructions.src = '/assets/instructions.png';
 
         instructions.onload = function() {
             context.drawImage(instructions, 0, 0);
