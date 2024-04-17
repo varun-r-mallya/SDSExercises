@@ -18,7 +18,7 @@ export var starterPokemon = {
         pokeball2.src = '/game/assets/pokeball2.png';
         context.font = '30px "Press Start 2P"';
         context.fillStyle = 'black';
-        context.fillText(`You chose ${pokemonName}!`, 200, 400);
+        context.fillText(`You chose ${pokemonName.slice(0,13)}!`, 200, 400);
         Music.stopOpening();
         Music.playStarter();
         pokeball.onload = setTimeout(function() {

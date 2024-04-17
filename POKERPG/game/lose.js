@@ -1,5 +1,8 @@
+import { Music } from "./music.js";
 export var lose = {
     lose: function(canvas) {
+        Music.stopBattle();
+        Music.stopSearch();
         var context = canvas.getContext('2d');
         let score = localStorage.getItem('score');
         score--;

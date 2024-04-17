@@ -30,6 +30,12 @@ export var pokemonFind = {
                     starterPokemon.start(canvas, activation);
                     window.removeEventListener('keydown', keydownHandler); // Remove the event listener
                     this.localStorage.setItem('activation', 'false');
+                    return;
+                }
+                if(event.key.toLowerCase() === 'y'){
+                    context.drawImage(screen, 520, 110);
+                    context.drawImage(screen_sad, 520, 120);
+                    return;
                 }
             });
             

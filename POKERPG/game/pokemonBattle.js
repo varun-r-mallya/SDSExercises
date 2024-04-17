@@ -42,6 +42,11 @@ export var pokemonBattle = {
                         context.drawImage(screen_sad, 520, 120);
                     }
                 }
+                if(event.key.toLowerCase() === 'z'){
+                    context.drawImage(screen, 520, 110);
+                    context.drawImage(screen_sad, 520, 120);
+                    return;
+                }
             });
             window.addEventListener('keydown', keydownHandler2);   
             });
