@@ -6,9 +6,9 @@ export var pokemonFind = {
     let screen = new Image();
     let screen_sad = new Image();
     let fillChoice = new Image();
-    fillChoice.src = '/game/assets/choice.png';
-    screen.src = '/game/assets/screen1.png';
-    screen_sad.src = '/game/assets/screen_sad.png';
+    fillChoice.src = 'SDSExercises/game/assets/choice.png';
+    screen.src = 'SDSExercises/game/assets/screen1.png';
+    screen_sad.src = 'SDSExercises/game/assets/screen_sad.png';
     
     let randomChance = Math.floor(Math.random() * 10) + 1;          //reset value to 10
     if (randomChance === 1) {

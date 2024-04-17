@@ -7,10 +7,10 @@ export var pokemonBattle = {
     let screen_sad = new Image();
     let BattleChoice = new Image();
     let wild = new Image();
-    BattleChoice.src = '/game/assets/battle.png';
-    screen.src = '/game/assets/screen1.png';
-    screen_sad.src = '/game/assets/screen_sad.png';
-    wild.src = '/game/assets/wild.png';
+    BattleChoice.src = 'SDSExercises/game/assets/battle.png';
+    screen.src = 'SDSExercises/game/assets/screen1.png';
+    screen_sad.src = 'SDSExercises/game/assets/screen_sad.png';
+    wild.src = 'SDSExercises/game/assets/wild.png';
     
     let randomChance = Math.floor(Math.random() * 10) + 1;          //reset value to 10
     if (randomChance === 1) {

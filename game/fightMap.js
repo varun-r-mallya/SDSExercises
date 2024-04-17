@@ -17,7 +17,7 @@ export var FightMap = {
     drawScene: function(canvas, pokemonData) {
         var context = canvas.getContext('2d');
         let map = new Image();
-        map.src = '/game/assets/map2.png';
+        map.src = 'SDSExercises/game/assets/map2.png';
         context.fillStyle = 'white';
         context.fillRect(0, 0, canvas.width, canvas.height);
         map.onload = function() {
@@ -29,7 +29,7 @@ export var FightMap = {
     character_render: function(canvas, map) {
         var context = canvas.getContext('2d');
         let character = new Image();
-        character.src = '/game/assets/character.png';
+        character.src = 'SDSExercises/game/assets/character.png';
         let isRendering = false;
 
         character.onload = function() {
@@ -55,12 +55,12 @@ export var FightMap = {
     mapTextRender: function(canvas) {
         var context = canvas.getContext('2d');
         let text1 = new Image();
-        text1.src = '/game/assets/movearound2.png';
+        text1.src = 'SDSExercises/game/assets/movearound2.png';
         text1.onload = function() {
             context.drawImage(text1, 510, 10);
         }
         let screen = new Image();
-        screen.src = '/game/assets/screen1.png';
+        screen.src = 'SDSExercises/game/assets/screen1.png';
         screen.onload = function() {
             context.drawImage(screen, 520, 110);
         }

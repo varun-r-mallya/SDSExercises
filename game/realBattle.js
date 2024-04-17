@@ -33,12 +33,12 @@ export var realBattle = {
         let move4 = new Image();
         let move5 = new Image();
         let move6 = new Image();
-        move1.src = 'game/assets/optA.png';
-        move2.src = 'game/assets/optB.png';
-        move3.src = 'game/assets/optC.png';
-        move4.src = 'game/assets/optD.png';
-        move5.src = 'game/assets/optE.png';
-        move6.src = 'game/assets/optF.png';
+        move1.src = 'SDSExecises/game/assets/optA.png';
+        move2.src = 'SDSExecises/game/assets/optB.png';
+        move3.src = 'SDSExecises/game/assets/optC.png';
+        move4.src = 'SDSExecises/game/assets/optD.png';
+        move5.src = 'SDSExecises/game/assets/optE.png';
+        move6.src = 'SDSExecises/game/assets/optF.png';
         let context = canvas.getContext('2d');
         context.fillStyle = 'black';
         context.font = '10px "Press Start 2P"';
@@ -103,47 +103,47 @@ export var realBattle = {
         var context = canvas.getContext('2d');
         switch (true) {
             case this.myHP <= 0:
-            myHPBar.src = 'game/assets/hp0.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp0.png';
             case this.myHP <= 10:
-            myHPBar.src = 'game/assets/hp10.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp10.png';
             break;
             case this.myHP <= 30:
-            myHPBar.src = 'game/assets/hp30.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp30.png';
             break;
             case this.myHP <= 50:
-            myHPBar.src = 'game/assets/hp50.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp50.png';
             break;
             case this.myHP <= 70:
-            myHPBar.src = 'game/assets/hp70.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp70.png';
             break;
             case this.myHP <= 90:
-            myHPBar.src = 'game/assets/hp90.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp90.png';
             break;
             case this.myHP <= 100:
-            myHPBar.src = 'game/assets/hp100.png';
+            myHPBar.src = 'SDSExercises/game/assets/hp100.png';
             break;
         }
 
         switch (true) {
             case this.myHP <= 0:
-            oppHPBar.src = 'game/assets/hp0.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp0.png';
             case this.oppHP <= 10:
-            oppHPBar.src = 'game/assets/hp10.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp10.png';
             break;
             case this.oppHP <= 30:
-            oppHPBar.src = 'game/assets/hp30.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp30.png';
             break;
             case this.oppHP <= 50:
-            oppHPBar.src = 'game/assets/hp50.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp50.png';
             break;
             case this.oppHP <= 70:
-            oppHPBar.src = 'game/assets/hp70.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp70.png';
             break;
             case this.oppHP <= 90:
-            oppHPBar.src = 'game/assets/hp90.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp90.png';
             break;
             case this.oppHP <= 100:
-            oppHPBar.src = 'game/assets/hp100.png';
+            oppHPBar.src = 'SDSExercises/game/assets/hp100.png';
             break;
         }
         myHPBar.onload = function() {
@@ -163,7 +163,7 @@ export var realBattle = {
         context.fillText(`You used ${myMove}`, 50, 50);
         context.fillText(`Opponent used ${oppMove}`, 50, 100);
         let pokeball = new Image();
-        pokeball.src = 'game/assets/pokeball.png';
+        pokeball.src = 'SDSExercises/game/assets/pokeball.png';
         pokeball.onload = function() {
             context.drawImage(pokeball, 20, 150, 125, 125);
         }

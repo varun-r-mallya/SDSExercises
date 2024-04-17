@@ -14,8 +14,8 @@ export var starterPokemon = {
         };
         let pokeball = new Image();
         let pokeball2 = new Image();
-        pokeball.src = '/game/assets/pokeball.png';
-        pokeball2.src = '/game/assets/pokeball2.png';
+        pokeball.src = 'SDSExercises/game/assets/pokeball.png';
+        pokeball2.src = 'SDSExercises/game/assets/pokeball2.png';
         context.font = '30px "Press Start 2P"';
         context.fillStyle = 'black';
         context.fillText(`You chose ${pokemonName}!`, 200, 400);
