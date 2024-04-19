@@ -6,7 +6,8 @@ export var Music = {
     Victory: null,
     GameOver: null,
     playOpening: function() {
-        this.Opening = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/vfywpihuos/1-01.%20Opening.mp3");
+        this.stopAll();
+        this.Opening = new Audio("/game/assets/audio/opening.mp3");
         this.Opening.loop = true;
         this.Opening.play();
         return;
@@ -19,7 +20,8 @@ export var Music = {
         return;
     },
     playStarter: function() {
-        this.Starter = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/zqjgamugau/1-08.%20Victory%20%28Vs.%20Wild%20Pok%C3%A9mon%29.mp3")
+        this.stopAll();
+        this.Starter = new Audio("/game/assets/audio/starter.mp3")
         this.Opening.loop = true;
         this.Starter.play();
         return;
@@ -32,7 +34,8 @@ export var Music = {
         return;
     },
     playSearch: function() {
-        this.Search = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/kihjfondbh/1-12.%20Viridian%20Forest.mp3");
+        this.stopAll();
+        this.Search = new Audio("/game/assets/audio/search.mp3");
         this.Search.loop = true;
         this.Search.play();
         return;
@@ -45,7 +48,8 @@ export var Music = {
         return;
     },
     playBattle: function() {
-        this.Battle = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/wpfiaxpxan/1-07.%20Battle%20%28Vs.%20Wild%20Pok%C3%A9mon%29.mp3");
+        this.stopAll();
+        this.Battle = new Audio("/game/assets/audio/battle.mp3");
         this.Battle.loop = true;
         this.Battle.play();
         return;
@@ -58,7 +62,8 @@ export var Music = {
         return;
     },
     playVictory: function() {
-        this.Victory = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/xgzrmqyzaq/1-16.%20Victory%20%28Vs.%20Trainer%29.mp3");
+        this.stopAll();
+        this.Victory = new Audio("/game/assets/audio/victory.mp3");
         this.Victory.loop = true;
         this.Victory.play();
         return;
@@ -71,7 +76,8 @@ export var Music = {
         return;
     },
     playGameOver: function() {
-        this.GameOver = new Audio("https://epsilon.vgmsite.com/soundtracks/pokemon-game-boy-pok-mon-sound-complete-set-play-cd/swpaozkibj/1-13.%20Guide.mp3");
+        this.stopAll();
+        this.GameOver = new Audio("/game/assets/audio/gameover.mp3");
         this.GameOver.loop = true;
         this.GameOver.play();
         return;
@@ -83,4 +89,13 @@ export var Music = {
         }
         return;
     },
+    stopAll: function() {
+        this.stopBattle();
+        this.stopGameOver();
+        this.stopOpening();
+        this.stopSearch();
+        this.stopStarter();
+        this.stopVictory();
+        return;
+    }
 };

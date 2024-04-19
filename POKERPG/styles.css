@@ -8,6 +8,7 @@ body {
 canvas {
     border: 1px solid #d3d3d3;
     background-color: #f1f1f1;      /*for testing only*/
+    margin-bottom: 10%;
 
 }
 #mainArea {
@@ -15,7 +16,7 @@ canvas {
     justify-content: center;
     align-items: center;
     height: 100%;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 
 #startbutton {
