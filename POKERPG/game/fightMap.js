@@ -27,6 +27,8 @@ export var FightMap = {
         this.mapTextRender(canvas);
     },
     character_render: function(canvas, map) {
+        let activation2 = localStorage.getItem('activation2');
+        console.log(activation2);
         var context = canvas.getContext('2d');
         let character = new Image();
         character.src = '/game/assets/character.png';
@@ -35,14 +37,13 @@ export var FightMap = {
         character.onload = function() {
             context.drawImage(character, FightMap.character_x, FightMap.character_y, 50, 50);
         }
-
         let keydownHandler = function(event){
-            if (!isRendering) {
+            if (!isRendering && localStorage.getItem('activation2') == "true") {
                 isRendering = true;
-                if(event.key === 'ArrowRight' && FightMap.character_x <= 450) {FightMap.character_x += 20;  pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, true); FightMap.topTextRender(canvas);}
-                else if(event.key === 'ArrowLeft'&& FightMap.character_x >= 25) {FightMap.character_x -= 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, true); FightMap.topTextRender(canvas);}
-                else if(event.key === 'ArrowUp' && FightMap.character_y >= 25) {FightMap.character_y -= 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, true); FightMap.topTextRender(canvas);}
-                else if(event.key === 'ArrowDown' && FightMap.character_y <= 450) {FightMap.character_y += 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, true); FightMap.topTextRender(canvas);}
+                if(event.key === 'ArrowRight' && FightMap.character_x <= 450) {FightMap.character_x += 20;  pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, activation2); FightMap.topTextRender(canvas);}
+                else if(event.key === 'ArrowLeft'&& FightMap.character_x >= 25) {FightMap.character_x -= 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, activation2); FightMap.topTextRender(canvas);}
+                else if(event.key === 'ArrowUp' && FightMap.character_y >= 25) {FightMap.character_y -= 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, activation2); FightMap.topTextRender(canvas);}
+                else if(event.key === 'ArrowDown' && FightMap.character_y <= 450) {FightMap.character_y += 20; pokemonBattle.start(canvas, FightMap.character_x, FightMap.character_y, keydownHandler, activation2); FightMap.topTextRender(canvas);}
                 context.drawImage(map, 10, 20);
                 context.drawImage(character, FightMap.character_x, FightMap.character_y, 50, 50);
                 setTimeout(function() {
@@ -50,7 +51,14 @@ export var FightMap = {
                 }, 500);
             }
         }
+        if(activation2 == "true")
         window.addEventListener('keydown', keydownHandler);
+        else
+        {
+        console.log("error");
+        window.removeEventListener('keydown', keydownHandler);
+        }
+        return;
     },
     mapTextRender: function(canvas) {
         var context = canvas.getContext('2d');

@@ -38,6 +38,7 @@ export var starterPokemon = {
         }, 2000);
         let keydownHandler = function(event) {
             if (event.key === 'Enter') {
+                let activation2 = localStorage.setItem('activation2', true);
                 window.removeEventListener('keydown', keydownHandler);
                 Music.stopStarter();
                 FightMap.start(canvas);

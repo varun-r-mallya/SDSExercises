@@ -17,7 +17,7 @@ var GameArea = {
 startButton.addEventListener('click', function() {
     GameArea.start();
     Music.playOpening();                              
-    let activation = localStorage.setItem('activation', true);        //TODO -uncomment 
+    let activation = localStorage.setItem('activation', true);        //TODO -uncomment
     Instructions.start(GameArea.canvas, activation);                  //TODO -uncomment
     // starterPokemon.start(GameArea.canvas);                          //TODO -uncomment
     // battleMaker.start(GameArea.canvas);

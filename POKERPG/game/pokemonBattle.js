@@ -1,6 +1,6 @@
 import { battleMaker } from './battleMaker.js';
 export var pokemonBattle = {
-    start: function(canvas, x, y, keydownHandler, battle) {
+    start: function(canvas, x, y, keydownHandler) {
     var context = canvas.getContext('2d');
     let pokemon = new Image();
     let screen = new Image();
@@ -32,6 +32,7 @@ export var pokemonBattle = {
                 }
             let keydownHandler2 = (function(event) {   
                 if(event.key.toLowerCase() === 'y'){
+                    localStorage.setItem('activation2', false);
                     localStorage.setItem('vsData', "");
                     localStorage.setItem('vsData', JSON.stringify(data));
                     window.removeEventListener('keydown', keydownHandler);
@@ -49,6 +50,7 @@ export var pokemonBattle = {
                     return;
                 }
             });
+            if(localStorage.getItem("activation2") == "true")
             window.addEventListener('keydown', keydownHandler2);   
             });
     }

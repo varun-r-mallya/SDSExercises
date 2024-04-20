@@ -29,7 +29,7 @@ export var MapRenderer = {
         }
 
         let keydownHandler = function(event){
-            if (!isRendering) {
+            if (!isRendering && localStorage.getItem('activation') == "true") {
                 isRendering = true;
                 if(event.key === 'ArrowRight' && MapRenderer.character_x <= 450) {MapRenderer.character_x += 20;  pokemonFind.start(canvas, MapRenderer.character_x, MapRenderer.character_y, activation, keydownHandler);}
                 else if(event.key === 'ArrowLeft'&& MapRenderer.character_x >= 25) {MapRenderer.character_x -= 20; pokemonFind.start(canvas, MapRenderer.character_x, MapRenderer.character_y, activation, keydownHandler);}
