@@ -12,6 +12,16 @@ export var realBattle = {
         var context = canvas.getContext('2d');
         let myPokemon = new Image();
         let vsPokemon = new Image();
+        let pokeball = new Image();
+        let fight = new Image();
+        fight.src = 'game/assets/fight.png';
+        fight.onload = function() {
+            context.drawImage(fight, 0,0);
+        }
+        pokeball.src = 'game/assets/pokeball.png';
+        pokeball.onload = function() {
+            context.drawImage(pokeball, 20, 150, 125, 125);
+        }
         myPokemon.src = pokemonData.sprites.back_default;
         vsPokemon.src = vsData.sprites.front_default;
         context.fillStyle = 'white';
@@ -42,47 +52,116 @@ export var realBattle = {
         let context = canvas.getContext('2d');
         context.fillStyle = 'black';
         context.font = '10px "Press Start 2P"';
+        let offset_x = 40;
+        let offset_y = 30;
         move6.onload = function() {
-            context.drawImage(move1, 430, 330, 200, 50);
-            context.fillText(`${moves[0].move.name}`, 465, 365);
-            context.drawImage(move2, 430, 380, 200, 50);
-            context.fillText(`${moves[1].move.name}`, 465, 415);
-            context.drawImage(move3, 430, 430, 200, 50);
-            context.fillText(`${moves[2].move.name}`, 465, 465);
-            context.drawImage(move4, 630, 330, 200, 50);
-            context.fillText(`${moves[3].move.name}`, 665, 365);
-            context.drawImage(move5, 630, 380, 200, 50);
-            context.fillText(`${moves[4].move.name}`, 665, 415);
-            context.drawImage(move6, 630, 430, 200, 50);
-            context.fillText(`${moves[5].move.name}`, 665, 465);
+            context.drawImage(move1, 450+offset_x, 330+offset_y, 200, 50);
+            context.fillText(`${moves[0].move.name}`, 485+offset_x, 365+offset_y);
+            context.drawImage(move2, 450+offset_x, 380+offset_y+10, 200, 50);
+            context.fillText(`${moves[1].move.name}`, 485+offset_x, 415+offset_y+10);
+            context.drawImage(move3, 450+offset_x, 430+offset_y+20, 200, 50);
+            context.fillText(`${moves[2].move.name}`, 485+offset_x, 465+offset_y+20);
+            context.drawImage(move4, 650+offset_x+10, 330+offset_y, 200, 50);
+            context.fillText(`${moves[3].move.name}`, 685+offset_x+10, 365+offset_y);
+            context.drawImage(move5, 650+offset_x+10, 380+offset_y+10, 200, 50);
+            context.fillText(`${moves[4].move.name}`, 685+offset_x+10, 415+offset_y+10);
+            context.drawImage(move6, 650+offset_x+10, 430+offset_y+20, 200, 50);
+            context.fillText(`${moves[5].move.name}`, 685+offset_x+10, 465+offset_y+20);
         }
+        let timesused = [0, 0, 0, 0, 0, 0];
         keydownHandler = function(event) {
             if(event.key.toLowerCase() === 'a'){
+                timesused[0]++;
+                if(timesused[0] > 3){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[0].move.name}`, 485+offset_x, 365+offset_y);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[0].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'b'){
+                timesused[1]++;
+                if(timesused[1] > 4){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[1].move.name}`, 485+offset_x, 415+offset_y+10);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[1].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'c'){
+                timesused[2]++;
+                if(timesused[2] > 3){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[2].move.name}`, 485+offset_x, 465+offset_y+20);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[2].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'd'){
+                timesused[3]++;
+                if(timesused[3] > 4){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[3].move.name}`, 685+offset_x+10, 365+offset_y);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[3].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);    
             }
             if(event.key.toLowerCase() === 'e'){
+                timesused[4]++;
+                if(timesused[4] > 5){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[4].move.name}`, 685+offset_x+10, 415+offset_y+10);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[4].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
             if(event.key.toLowerCase() === 'f'){
+                timesused[5]++;
+                if(timesused[5] > 4){
+                    context.fillStyle = 'red';
+                    context.font = '10px "Press Start 2P"';
+                    context.fillText(`${moves[5].move.name}`, 685+offset_x+10, 465+offset_y+20);
+                    context.clearRect(0, 0, 600, 150);
+                    context.fillStyle = 'red';
+                    context.font = '15px "Press Start 2P"';
+                    context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    return;
+                }
                 let myMove = moves[5].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
@@ -147,26 +226,41 @@ export var realBattle = {
             break;
         }
         myHPBar.onload = function() {
+            context.fillStyle = 'blue';
+            context.font = '20px "Press Start 2P"';
             context.drawImage(myHPBar, 50, 500, 300, 30);
+            context.fillText(`   ${realBattle.myHP}/100`, 50, 525);
+            context.fillStyle = 'black';
+            context.font = '10px "Press Start 2P"';
+        }
+        oppHPBar.onload = function() {
+            context.fillStyle = 'blue';
+            context.font = '20px "Press Start 2P"';
             context.drawImage(oppHPBar, 600, 280, 300, 30);
+            context.fillText(`   ${realBattle.oppHP}/100`, 600, 305);
+            context.fillStyle = 'black';
+            context.font = '10px "Press Start 2P"';
         }
         return;
 
     },
     moveResolver: function(myMove, oppMove, canvas, keydownHandler) {
         console.log(this.myHP, this.oppHP, myMove, oppMove);
-        myMove.length > oppMove.length ? this.oppHP -= 10 : this.myHP -= 10;
+        let lossHP = Math.floor(Math.random()*21);
+        if(Math.random < 0.5){
+            myMove.length > oppMove.length ? this.oppHP -= lossHP : this.myHP -= lossHP;    
+        }
+        else{
+            oppMove.length > myMove.length ? this.myHP -= lossHP : this.oppHP -= lossHP;    
+        }
+        
         let context = canvas.getContext('2d');
+        context.clearRect(0, 0, 600, 150);
         context.fillStyle = 'black';
         context.font = '18px "Press Start 2P"';
-        context.clearRect(0, 0, 600, 150);
         context.fillText(`You used ${myMove}`, 50, 50);
         context.fillText(`Opponent used ${oppMove}`, 50, 100);
-        let pokeball = new Image();
-        pokeball.src = 'game/assets/pokeball.png';
-        pokeball.onload = function() {
-            context.drawImage(pokeball, 20, 150, 125, 125);
-        }
+
         if(this.myHP <= 0){
             Music.playGameOver();
             Music.stopBattle();

@@ -13,5 +13,6 @@ export var win = {
         context.font = '30px "Press Start 2P"';
         context.fillText('You win!', 350, 300);
         context.fillText(`Your score:${score}!`, 300, 330);
+        document.createElement('button');
     }
 }
