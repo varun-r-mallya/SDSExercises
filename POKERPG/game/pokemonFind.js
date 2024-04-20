@@ -24,20 +24,24 @@ export var pokemonFind = {
                     pokemonFind.youFound(data, context);
                     context.drawImage(fillChoice, 547, 446);
                 }
-            window.addEventListener('keydown', function(event) {   
+            let killYourself = function(event) {
+                window.removeEventListener('keydown', keydownHandler);   
                 if(event.key.toLowerCase() === 'x'){
                     localStorage.setItem('pokemonData', JSON.stringify(data));
                     starterPokemon.start(canvas, activation);
-                    window.removeEventListener('keydown', keydownHandler); // Remove the event listener
+                    window.removeEventListener('keydown', killYourself);
                     this.localStorage.setItem('activation', 'false');
                     return;
                 }
                 if(event.key.toLowerCase() === 'y'){
                     context.drawImage(screen, 520, 110);
                     context.drawImage(screen_sad, 520, 120);
+                    window.addEventListener('keydown', keydownHandler);
+                    window.removeEventListener('keydown', killYourself);
                     return;
                 }
-            });
+            };
+            window.addEventListener('keydown', killYourself);
             
             });
     }

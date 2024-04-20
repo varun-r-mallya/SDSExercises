@@ -30,23 +30,20 @@ export var pokemonBattle = {
                     context.font = '20px "Press Start 2P"';
                     context.fillText(`${data.name}`, 650, 50);
                 }
-            let keydownHandler2 = (function(event) {   
+            let keydownHandler2 = (function(event) {
+                window.removeEventListener('keydown', keydownHandler);   
                 if(event.key.toLowerCase() === 'y'){
                     localStorage.setItem('activation2', false);
                     localStorage.setItem('vsData', "");
                     localStorage.setItem('vsData', JSON.stringify(data));
-                    window.removeEventListener('keydown', keydownHandler);
                     battleMaker.start(canvas, keydownHandler2);
-                }
-                else{
-                    screen_sad.onload = function() {
-                        context.drawImage(screen, 520, 110);
-                        context.drawImage(screen_sad, 520, 120);
-                    }
+                    window.removeEventListener('keydown', keydownHandler2);
                 }
                 if(event.key.toLowerCase() === 'z'){
                     context.drawImage(screen, 520, 110);
                     context.drawImage(screen_sad, 520, 120);
+                    window.addEventListener('keydown', keydownHandler);
+                    window.removeEventListener('keydown', keydownHandler2);
                     return;
                 }
             });

@@ -5,12 +5,13 @@ export var starterPokemon = {
         var context = canvas.getContext('2d');
         let pokemonData = JSON.parse(localStorage.getItem('pokemonData'));
         let pokemonName = pokemonData.name;
-        let pokemon = new Image();
-        pokemon.src = pokemonData.sprites.front_default;
+        let pokemon_starter = new Image();
+        pokemon_starter.src = pokemonData.sprites.front_default;
+        console.log(pokemon_starter);
         context.fillStyle = 'white';
         context.fillRect(0, 0, 960, 540);
-        pokemon.onload = function() {
-            context.drawImage(pokemon, 330, 50, 300, 300);
+        pokemon_starter.onload = function() {
+            context.drawImage(pokemon_starter, 330, 50, 300, 300);
         };
         let pokeball = new Image();
         let pokeball2 = new Image();
