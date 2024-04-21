@@ -1,8 +1,9 @@
 import { Music } from './music.js';
 import { Instructions } from './Instructions.js'
-// import { starterPokemon } from './starterPokemon.js';
+import { starterPokemon } from './starterPokemon.js';
 import { battleMaker } from './battleMaker.js';
 import { pokeDex } from './pokedex.js';
+import { FightMap } from './fightMap.js';
 var startButton = document.getElementById('startbutton');
 var GameArea = {
     canvas: document.createElement('canvas'),
@@ -19,8 +20,8 @@ startButton.addEventListener('click', function() {
     GameArea.start();
     Music.playOpening();                              
     let activation = localStorage.setItem('activation', true);        //TODO -uncomment
-    Instructions.start(GameArea.canvas, activation);                  //TODO -uncomment
-    // starterPokemon.start(GameArea.canvas);                          //TODO -uncomment
+    // Instructions.start(GameArea.canvas, activation);                  //TODO -uncomment
+    starterPokemon.start(GameArea.canvas);                          //TODO -uncomment
     // battleMaker.start(GameArea.canvas);
     if(localStorage.getItem('score') === null){
         let score = localStorage.setItem('score', 0);
