@@ -29,6 +29,9 @@ startButton.addEventListener('click', function() {
     
 });
 
+
+//POKEDEX
+
 let pokedex = document.getElementById("pokedex");
 let btn = document.getElementById("pokedexButton");
 var span = document.getElementsByClassName("close")[0];
@@ -42,25 +45,12 @@ window.onclick = function(event) {
   if (event.target == pokedex) {
     pokedex.style.display = "none";
   }
-  let canvas = document.getElementById('pokedexCanvas');
-  pokeDex.start(canvas);
 }
 
-document.getElementById('search').addEventListener('input', function(e) {
-  let pokelist = pokeDex.getPokemonList();
-  console.log(pokelist);
-  let input = e.target.value;
-  let matches = pokelist.filter(pokemon => pokemon.toLowerCase().startsWith(input.toLowerCase()));
-  let resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = '';
-  matches.forEach(match => {
-    let div = document.createElement('div');
-    div.textContent = match;
-    div.addEventListener('click', function() {
-      document.getElementById('search').value = this.textContent;
-      resultsDiv.style.display = 'none';
-    });
-    resultsDiv.appendChild(div);
-  });
-  resultsDiv.style.display = matches.length > 0 ? 'block' : 'none';
+let canvas = document.getElementById('pokedexCanvas');
+pokeDex.start(canvas);
+
+document.getElementById('search').addEventListener('change', function(event) {
+  let inputValue = event.target.value;
+  pokeDex.search(inputValue);
 });
