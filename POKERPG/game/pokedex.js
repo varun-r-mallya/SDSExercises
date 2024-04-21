@@ -38,6 +38,7 @@ export var pokeDex = {
         .then(response => {
             if(!response.ok) {
                 console.error("Network Error");
+                alert("Pokemon with that name does not exist!!!");
             }
             resolve(response.json());
         })

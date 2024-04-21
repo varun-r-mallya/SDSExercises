@@ -36,11 +36,9 @@ export var MapRenderer = {
                 context.drawImage(map, 10, 20);
                 if((MapRenderer.character_x > 0 && MapRenderer.character_y > 0 && MapRenderer.character_x <= 290 && MapRenderer.character_y <= 90) || (MapRenderer.character_x > 0 && MapRenderer.character_y > 90 && MapRenderer.character_x <= 210 && MapRenderer.character_y <= 140) || (MapRenderer.character_x > 0 && MapRenderer.character_y > 140 && MapRenderer.character_x <= 160 && MapRenderer.character_y <= 220) || (MapRenderer.character_x > 0 && MapRenderer.character_y > 230 && MapRenderer.character_x <= 80 && MapRenderer.character_y <= 340) ){ 
                     character.src = '/game/assets/boatchar.png';
-                    console.log("water: ", MapRenderer.character_x, MapRenderer.character_y);
                 }
                 else{
                     character.src = '/game/assets/character.png';
-                    console.log("land: ", MapRenderer.character_x, MapRenderer.character_y);
                 }
                 context.drawImage(character, MapRenderer.character_x, MapRenderer.character_y, 50, 50);
                 setTimeout(function() {

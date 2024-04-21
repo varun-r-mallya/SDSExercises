@@ -47,11 +47,11 @@ export var FightMap = {
                 context.drawImage(map, 10, 20);
                 if((FightMap.character_x >= 400 && FightMap.character_y > 140 && FightMap.character_x <= 460 && FightMap.character_y <= 220) || (FightMap.character_x >= 300 && FightMap.character_y > 220 && FightMap.character_x <= 460 && FightMap.character_y <= 460) || (FightMap.character_x >= 220 && FightMap.character_y >= 280 && FightMap.character_x <= 300 && FightMap.character_y <= 460)){ 
                     character.src = '/game/assets/boatchar.png';
-                    console.log("water: ", FightMap.character_x, FightMap.character_y);
+                    
                 }
                 else{
                     character.src = '/game/assets/character.png';
-                    console.log("land: ", FightMap.character_x, FightMap.character_y);
+                    
                 }
                 context.drawImage(character, FightMap.character_x, FightMap.character_y, 50, 50);
                 setTimeout(function() {
