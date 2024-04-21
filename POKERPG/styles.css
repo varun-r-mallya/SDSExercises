@@ -23,10 +23,18 @@ canvas {
     background-color: none;
 }
 
+#header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+    background: linear-gradient(to left, white, red);
+
+}
+
 h1{
     margin: 0;
     padding: 1%;
-    background: linear-gradient(to right, white, red);
     align-self: center;
 }
 
@@ -76,7 +84,8 @@ footer{
   }
 
 #pokedexButton {
-    color: white;
+    color: transparent;
+    background-color: transparent;
     border: none;
   }
 
