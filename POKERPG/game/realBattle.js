@@ -54,23 +54,36 @@ export var realBattle = {
         context.font = '10px "Press Start 2P"';
         let offset_x = 40;
         let offset_y = 30;
-        move6.onload = function() {
+        move1.onload = function() {
             context.drawImage(move1, 450+offset_x, 330+offset_y, 200, 50);
             context.fillText(`${moves[0].move.name}`, 485+offset_x, 365+offset_y);
+        }
+        move2.onload = function() {
             context.drawImage(move2, 450+offset_x, 380+offset_y+10, 200, 50);
             context.fillText(`${moves[1].move.name}`, 485+offset_x, 415+offset_y+10);
+        }
+        move3.onload = function() {
             context.drawImage(move3, 450+offset_x, 430+offset_y+20, 200, 50);
             context.fillText(`${moves[2].move.name}`, 485+offset_x, 465+offset_y+20);
+        }
+        move4.onload = function() {
             context.drawImage(move4, 650+offset_x+10, 330+offset_y, 200, 50);
             context.fillText(`${moves[3].move.name}`, 685+offset_x+10, 365+offset_y);
+        }
+        move5.onload = function() {
             context.drawImage(move5, 650+offset_x+10, 380+offset_y+10, 200, 50);
             context.fillText(`${moves[4].move.name}`, 685+offset_x+10, 415+offset_y+10);
+        }
+        move6.onload = function() {
             context.drawImage(move6, 650+offset_x+10, 430+offset_y+20, 200, 50);
             context.fillText(`${moves[5].move.name}`, 685+offset_x+10, 465+offset_y+20);
         }
-        let timesused = [0, 0, 0, 0, 0, 0];
+
+
+        let timesused = [1, 1, 1, 1, 1, 1];
+        let binActivator = [0,0,0,0,0,0];
         keydownHandler = function(event) {
-            if(event.key.toLowerCase() === 'a'){
+            if(event.key.toLowerCase() === '1'){
                 timesused[0]++;
                 if(timesused[0] > 3){
                     context.fillStyle = 'red';
@@ -80,13 +93,15 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[0] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[0].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
-            if(event.key.toLowerCase() === 'b'){
+            if(event.key.toLowerCase() === '2'){
                 timesused[1]++;
                 if(timesused[1] > 4){
                     context.fillStyle = 'red';
@@ -96,13 +111,15 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[1] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[1].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
-            if(event.key.toLowerCase() === 'c'){
+            if(event.key.toLowerCase() === '3'){
                 timesused[2]++;
                 if(timesused[2] > 3){
                     context.fillStyle = 'red';
@@ -112,13 +129,15 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[2] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[2].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
-            if(event.key.toLowerCase() === 'd'){
+            if(event.key.toLowerCase() === '4'){
                 timesused[3]++;
                 if(timesused[3] > 4){
                     context.fillStyle = 'red';
@@ -128,13 +147,15 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[3] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[3].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);    
             }
-            if(event.key.toLowerCase() === 'e'){
+            if(event.key.toLowerCase() === '5'){
                 timesused[4]++;
                 if(timesused[4] > 5){
                     context.fillStyle = 'red';
@@ -144,13 +165,15 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[4] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[4].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
                 realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
             }
-            if(event.key.toLowerCase() === 'f'){
+            if(event.key.toLowerCase() === '6'){
                 timesused[5]++;
                 if(timesused[5] > 4){
                     context.fillStyle = 'red';
@@ -160,11 +183,13 @@ export var realBattle = {
                     context.fillStyle = 'red';
                     context.font = '15px "Press Start 2P"';
                     context.fillText(`You cannot use this move anymore!!`, 50, 50);
+                    binActivator[5] = 1;
+                    realBattle.drawCheck(binActivator, canvas);
                     return;
                 }
                 let myMove = moves[5].move.name;
                 let oppMove = realBattle.moveDeciderVs(vsData);
-                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData);
+                realBattle.moveResolver(myMove, oppMove, canvas, keydownHandler, pokemonData, vsData, );
             }
 
         };
@@ -278,4 +303,17 @@ export var realBattle = {
         this.hpRenderer(canvas);
         return;
     },
+    drawCheck: function(binActivator, canvas){
+        let context = canvas.getContext('2d');
+        if (binActivator.every((element) => element === 1)) {
+            context.fillStyle = 'black';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            Music.stopAll();
+            context.fillStyle = 'white';
+            context.font = '30px "Press Start 2P"';
+            context.textAlign = 'center';
+            context.fillText('Score: ' + localStorage.getItem('score'), canvas.width / 2, canvas.height / 2 - 50);
+            context.fillText('Draw', canvas.width / 2, canvas.height / 2 + 50);
+        }
+    }
 }
