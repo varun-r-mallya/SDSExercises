@@ -14,3 +14,20 @@ CREATE TABLE ADMINISTRATORS (
     UNIQUE KEY AdminID (AdminID)
 );
 
+CREATE TABLE CLIENTSALT (
+        ClientID varchar(255) NOT NULL,
+        Salt varchar(255),
+        PRIMARY KEY (ClientID),
+        FOREIGN KEY (ClientID) REFERENCES CLIENT(ClientID)
+    ); 
+
+
+
+CREATE TABLE ADMINISTRATORSALT (
+        AdminID varchar(255) NOT NULL,
+        Salt varchar(255),
+        PRIMARY KEY (AdminID),
+        FOREIGN KEY (AdminID) REFERENCES ADMINISTRATORS(AdminID)
+    ); 
+
+

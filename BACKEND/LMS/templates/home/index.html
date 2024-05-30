@@ -61,6 +61,21 @@
       text-align: center;
       margin-bottom: 2%;
     }
+    .register-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #ff8d8d;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .register-btn:hover {
+      background-color: #ff3535;
+    }
   </style>
 </head>
 <body>
@@ -69,6 +84,7 @@
     <h1>Welcome to The Xeon Mainframe Library</h1>
     <p>Explore the universe of knowledge with us!</p>
     <div class="buttoncontainer">
+        <button class="register-btn" onclick="location.href='register';">Register</button>
         <button class="login-btn" onclick="location.href='admin';">Admin Login</button>
         <button class="login-btn" onclick="location.href='client';">Client Login</button>
     </div>

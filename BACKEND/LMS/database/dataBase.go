@@ -22,7 +22,7 @@ func DataBase() {
         Passwd: os.Getenv("DBPASS"),
         Net:    "tcp",
         Addr:   "127.0.0.1:3306",
-        DBName: "LMS", 
+        DBName: os.Getenv("DBNAME"), 
 		AllowNativePasswords: true,
     }
 
