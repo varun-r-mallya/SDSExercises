@@ -20,7 +20,7 @@ func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
 	fmt.Println("Error page was rendered")
 	w.WriteHeader(status)
     if status == http.StatusNotFound {
-        tmpl := template.Must(template.ParseFiles("./templates/error/index.html"))
+        tmpl := template.Must(template.ParseFiles("./templates/error/index.html"))	//TODO: add the name of the searched page here in the template
         tmpl.Execute(w, nil)
     }
 }
