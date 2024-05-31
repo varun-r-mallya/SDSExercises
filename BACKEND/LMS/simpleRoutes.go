@@ -16,11 +16,16 @@ func homepage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
+type URL_array struct {
+	Page string
+}
+
 func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
-	fmt.Println("Error page was rendered")
+	URL_array := URL_array{r.URL.Path[1:]}
 	w.WriteHeader(status)
     if status == http.StatusNotFound {
-        tmpl := template.Must(template.ParseFiles("./templates/error/index.html"))	//TODO: add the name of the searched page here in the template
-        tmpl.Execute(w, nil)
-    }
+    	tmpl := template.Must(template.ParseFiles("./templates/error/index.html"))
+		tmpl.Execute(w, URL_array)
+	}
+	fmt.Println("Error page was rendered")
 }

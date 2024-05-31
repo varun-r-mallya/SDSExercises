@@ -8,6 +8,7 @@ import (
 
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/database"
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/passwords"
+	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/jsonwebtoken"
 )
 
 func Admin(w http.ResponseWriter, r *http.Request) {
@@ -32,6 +33,8 @@ func AdminAuth(w http.ResponseWriter, r *http.Request) {
 	}
 	if passwords.ComparePasswords(password, password_actual, salt) {
 		fmt.Println("Admin login successful")
+		//set cookie
+		w = jsonwebtoken.SetCookieHandler(w, username, "admin", "/admin/dashboard")
 		http.Redirect(w, r, "/admin/dashboard", http.StatusFound)
 	} else {
 		fmt.Println("Admin login failed")

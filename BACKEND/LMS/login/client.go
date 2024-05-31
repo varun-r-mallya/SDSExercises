@@ -8,6 +8,7 @@ import (
 
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/database"
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/passwords"
+	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/jsonwebtoken"
 )
 
 func Client(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +34,8 @@ func ClientAuth(w http.ResponseWriter, r *http.Request) {
 	}
 	if passwords.ComparePasswords(password, password_actual, salt) {
 		fmt.Println("Client login successful")
+		//set cookie
+		w = jsonwebtoken.SetCookieHandler(w, username, "client", "/client/dashboard")
 		http.Redirect(w, r, "/client/dashboard", http.StatusFound)
 	} else {
 		fmt.Println("Client login failed")

@@ -9,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/login"
 	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/dashboard"
+	"github.com/varun-r-mallya/SDSExercises/tree/main/BACKEND/LMS/jsonwebtoken"
 )
 
 func server() {
@@ -25,8 +26,11 @@ func server() {
 	http.HandleFunc("/login/client", login.ClientAuth)	//admin login authentication
 	http.HandleFunc("/register", login.Register)	//registration
 	http.HandleFunc("/register/save", login.RegisterSave)	//registration to DB
-	http.HandleFunc("/admin/dashboard", dashboard.AdminDashboard)	//admin dashboard
-	http.HandleFunc("/client/dashboard", dashboard.ClientDashboard)	//client dashboard
+	http.HandleFunc("/noaccess", login.Noaccess)	//no access page
+
+	//to the middleware
+	http.HandleFunc("/admin/dashboard", jsonwebtoken.Middleware("/admin/dashboard", dashboard.AdminDashboard))
+	http.HandleFunc("/client/dashboard", jsonwebtoken.Middleware("/client/dashboard", dashboard.ClientDashboard))
 
 	fmt.Println("Server listening on port", port)
 	log.Fatal(http.ListenAndServe(":" + port, nil))
