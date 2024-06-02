@@ -31,7 +31,8 @@ func server() {
 	//to the middleware
 	http.HandleFunc("/admin/dashboard", jsonwebtoken.Middleware("/admin/dashboard", dashboard.AdminDashboard))
 	http.HandleFunc("/client/dashboard", jsonwebtoken.Middleware("/client/dashboard", dashboard.ClientDashboard))
+	http.HandleFunc("/admin/dashboard/api", jsonwebtoken.Middleware("/admin/dashboard/api", dashboard.AdminDashboardAPI))
 
-	fmt.Println("Server listening on port", port)
+	fmt.Println("Server listening on port", port, "on address http://localhost:" + port)
 	log.Fatal(http.ListenAndServe(":" + port, nil))
 }

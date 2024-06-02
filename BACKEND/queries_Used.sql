@@ -31,3 +31,26 @@ CREATE TABLE ADMINISTRATORSALT (
     ); 
 
 
+CREATE TABLE BOOKLIST (
+    B_Id int(10) unsigned NOT NULL AUTO_INCREMENT,
+    BookName varchar(255) DEFAULT NULL,
+    Author varchar(255) DEFAULT NULL,
+    Genre varchar(255) DEFAULT NULL,
+    NumberofCopies int(10) unsigned DEFAULT 0,
+    NumberofCopiesAvailable int(10) unsigned DEFAULT 0,
+    NumberofCopiesBorrowed int(10) unsigned DEFAULT 0,
+    CONSTRAINT check_copies CHECK (NumberofCopies = NumberofCopiesAvailable + NumberofCopiesBorrowed),
+    primary key(B_Id)
+);
+
+CREATE TABLE TRANSACTIONS (
+    T_Id int(10) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
+    ClientID varchar(255) DEFAULT NULL,
+    BookID int(10) unsigned DEFAULT NULL,
+    Borrowed boolean DEFAULT NULL,
+    DateBorrowed date DEFAULT NULL,
+    DateReturned date DEFAULT NULL,
+    primary key(T_Id),
+    FOREIGN KEY (ClientID) REFERENCES CLIENT(ClientID),
+    FOREIGN KEY (BookID) REFERENCES BOOKLIST(B_Id)
+);

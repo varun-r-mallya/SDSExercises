@@ -18,6 +18,21 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func AdminAuth(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		adminAuthPOST(w, r)
+	} else if r.Method == "GET" {
+		// adminAuthGET(w, r)
+	} else {
+		http.Error(w, "{\"message\": \"Method not allowed\"}", http.StatusMethodNotAllowed)
+	}
+	
+}
+/* Unnecessary function for now, but can be made better later to add as the API endpoint */
+// func adminAuthGET(w http.ResponseWriter, r *http.Request) {
+// 	http.Error(w, "{\"message\": \"Method not allowed\"}", http.StatusMethodNotAllowed)
+// }
+
+func adminAuthPOST(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Admin login authentication was called")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")

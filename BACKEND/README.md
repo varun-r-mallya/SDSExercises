@@ -12,7 +12,8 @@
     - View their borrowing history.
 - Secure Password Storage
     - Passwords will be salted and hashed (without using libraries) and only then stored in the database        &#10004;
-- Session Management using self implemented JWTs
+- Session Management using self implemented JWTs    &#10004;
+- Private routes implemented    &#10004;
 
 ### Additional features include
 - safeguards against SQL injection      &#10004;
