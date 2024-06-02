@@ -21,6 +21,13 @@ function HashPassword(password) {
     return password_object;
 }
 
+function PasswordVerify(password, salt){
+    const salt_first = salt;
+    const salt_second = process.env.GLOBALSALT;
+    const salted_password = `${salt_first}${password}${salt_second}`;
+    return hasher(salted_password);
+
+}
 function generateRandomString(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -32,4 +39,5 @@ function generateRandomString(length) {
 
 module.exports = {
     HashPassword,
+    PasswordVerify
 }

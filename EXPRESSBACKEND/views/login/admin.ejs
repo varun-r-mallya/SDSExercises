@@ -90,7 +90,7 @@
         <div class="login-form">
             <h2>The Xeon Mainframe Library</h2>
             <h3>Admin Login</h3>
-            <form action="/login/admin" method="post">
+            <form action="/admin" method="post">
                 <div class="form-group">
                     <input type="text" class="form-control" name="username" placeholder="Username" required>
                 </div>
@@ -129,14 +129,23 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
-            const response = await fetch('/login/admin', {
+            const jsonData = {};
+            for (let [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+            const requestOptions = {
                 method: 'POST',
-                body: formData
-            });
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData)
+            };
+            const response = await fetch('/admin', requestOptions);
             if (response.ok) { 
             if (response.redirected) {
                 window.location.href = response.url;
-                //TODO: add the JSON WEB TOKEN to the local storage here
+            }
+            else {
+                const error = await response.json();
+                message.innerText = error.message;
             }
             } else {
             const error = await response.json();
