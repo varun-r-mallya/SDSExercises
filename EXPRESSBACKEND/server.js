@@ -29,8 +29,28 @@ app.post('/admin', admin.Authorize);
 app.post('/client', client.Authorize);
 
 app.use(middleware.Authorize);
+app.use(express.json());
+
+//admin
 app.get('/admin/dashboard', admin.Dashboard);
+app.use(middleware.SQLClean);
+app.post('/admin/addbooks', admin.AddBooks);
+app.post('/admin/deletebooks', admin.Delete);
+app.post('/admin/updatebooks', admin.Update);
+app.get('/admin/viewbook', admin.View);
+// app.post('/admin/manageadmins', admin.ManageAdmins);
+// app.post('/admin/acceptcheckout', admin.AcceptCheckOut);
+// app.post('/admin/acceptcheckin', admin.AcceptCheckIn);
+
+
+//client
 app.get('/client/dashboard', client.Dashboard);
+// app.post('/client/searchbooks', client.SearchBooks);
+// app.post('/client/viewbooks', client.ViewBooks);
+// app.post('/client/checkout', client.CheckOut);
+// app.post('/client/checkin', client.CheckIn);
+// app.post('/client/viewhistory', client.ViewHistory);
+
 app.use(ErrorPage.Error);
 
 

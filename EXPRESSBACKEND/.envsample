@@ -1,0 +1,7 @@
+DBUSER=     #database user name
+DBPASS=     #database password
+DBNAME=     #database name
+PORT=       #port number
+GLOBALSALT= #salt for password hashing
+JWTSECRET=  #secret for jwt token
+JWT_EXPIRATION_TIME=      #this is in minutes
