@@ -106,7 +106,7 @@ const View = (req, res) => {
                 res.render('./search/booknotfound.ejs', {name: title});
                 return;
             }
-            console.log(result[0]);
+            // console.log(result[0]);
             res.render('./search/admin.ejs', { book: result[0] });
             return;
         })

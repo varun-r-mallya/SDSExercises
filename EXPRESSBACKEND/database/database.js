@@ -12,6 +12,16 @@ module.exports = {
 };
 
 function connectToSQL() {
+    
+    /* for connection pooling */
+
+    // db = mysql.createPool({
+    //     host: 'localhost',
+    //     user: process.env.DBUSER,
+    //     password: process.env.DBPASS,
+    //     database: process.env.DBNAME
+    // });
+
     db = mysql.createConnection({
         host: 'localhost',
         user: process.env.DBUSER,

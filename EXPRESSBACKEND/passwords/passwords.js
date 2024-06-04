@@ -17,7 +17,7 @@ function salter(password) {
 function HashPassword(password) {
     password_object = salter(password);
     password_object.hashed_password = hasher(password_object.hashed_password);
-    console.log(password_object)
+    // console.log(password_object)
     return password_object;
 }
 

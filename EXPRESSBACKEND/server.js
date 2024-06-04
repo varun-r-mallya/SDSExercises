@@ -31,9 +31,11 @@ app.post('/client', client.Authorize);
 app.use(middleware.Authorize);
 app.use(express.json());
 
-//admin
 app.get('/admin/dashboard', admin.Dashboard);
+app.get('/client/dashboard', client.Dashboard);
+
 app.use(middleware.SQLClean);
+//admin
 app.post('/admin/addbooks', admin.AddBooks);
 app.post('/admin/deletebooks', admin.Delete);
 app.post('/admin/updatebooks', admin.Update);
@@ -44,12 +46,11 @@ app.get('/admin/viewbook', admin.View);
 
 
 //client
-app.get('/client/dashboard', client.Dashboard);
-// app.post('/client/searchbooks', client.SearchBooks);
-// app.post('/client/viewbooks', client.ViewBooks);
-// app.post('/client/checkout', client.CheckOut);
-// app.post('/client/checkin', client.CheckIn);
-// app.post('/client/viewhistory', client.ViewHistory);
+
+app.get('/client/viewbook', client.View);
+app.post('/client/adminpreviledges', client.AdminPreviledges);
+app.post('/client/checkout', client.CheckOut);
+app.post('/client/checkin', client.CheckIn);
 
 app.use(ErrorPage.Error);
 

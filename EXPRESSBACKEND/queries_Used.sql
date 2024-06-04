@@ -46,7 +46,7 @@ CREATE TABLE BOOKLIST (
 
 CREATE TABLE TRANSACTIONS (
     T_Id int(10) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
-    ClientID varchar(255) DEFAULT NULL,
+    ClientID varchar(255) NOT NULL,
     B_Id int(10) unsigned NOT NULL, -- book Identification number
     CheckOutAccepted boolean DEFAULT NULL,
     CheckInAccepted boolean DEFAULT NULL,
@@ -64,3 +64,6 @@ CREATE TABLE CONVERTQ (
     FOREIGN KEY (ClientID) REFERENCES CLIENT(ClientID),
     primary key(C_Id)
 );
+
+INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted, CheckInAccepted, DateBorrowed, DateReturned) 
+VALUES ("client", 6, 1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY));
