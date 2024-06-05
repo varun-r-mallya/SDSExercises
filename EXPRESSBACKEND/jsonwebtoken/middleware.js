@@ -8,6 +8,7 @@ const Authorize = (req, res, next) => {
     }
     const decoded = jsonwebtoken.verifyJWT(token);
     if (!decoded) {
+        res.clearCookie('token');
         res.redirect('/noaccess');
         return;
     }
@@ -16,6 +17,7 @@ const Authorize = (req, res, next) => {
         return;
     }
     if(req.url.includes('client') && (decoded.user_type !== 'client')){
+
         res.redirect('/noaccess');
         return;
     }

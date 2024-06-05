@@ -34,7 +34,7 @@ const Authorize = (req, res) => {
             const new_hashed_password = passwords.PasswordVerify(password, result[0].Salt);
             if (new_hashed_password === result[0].AdminPassword) {
                 const token = jsonwebtoken.generateJWT(username, 'admin');
-                res.cookie('token', token, { httpOnly: false, path: '/admin' });
+                res.cookie('token', token, { httpOnly: false, path: '/' });
                 res.redirect('/admin/dashboard');
                 return;
             }

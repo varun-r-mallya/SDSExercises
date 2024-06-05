@@ -89,7 +89,7 @@
                     <h3>Due Time: <text><%=book.NumberofDays%> days</text></h3>
                     <h3>Number of Available Copies: <text><%=book.NumberofCopiesAvailable%></text></h3>
                     <h3>Total Number of Copies: <text><%=book.NumberofCopies%></text></h3>
-                    <h3>Number of Copies Borrowed: <text><%=book.NumberofCopiesBorowed%></text></h3>
+                    <h3>Number of Copies Borrowed: <text><%=book.NumberofCopiesBorrowed%></text></h3>
                 </div>
             </div>
             <div class="col-md-6">
@@ -124,11 +124,11 @@
             </div>
         </div>
     <div id="logoutbutton" style="flex-direction: row;">
-        <a class="btn btn-primary logout-button">Logout</a>
         <button type="button" class="btn btn-danger" onclick="window.location.href='/admin/dashboard'">Back</button>
     </div>
 </body>
 <script>
+
         function deleteBook() {
             const bookID = '<%=book.B_Id%>';
             const requestOptions = {

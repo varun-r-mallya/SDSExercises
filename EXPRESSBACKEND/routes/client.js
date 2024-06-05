@@ -34,7 +34,7 @@ const Authorize = (req, res) => {
             const new_hashed_password = passwords.PasswordVerify(password, result[0].Salt);
             if (new_hashed_password === result[0].ClientPassword) {
                 const token = jsonwebtoken.generateJWT(username, 'client');
-                res.cookie('token', token, { httpOnly: false, path: '/client' });
+                res.cookie('token', token, { httpOnly: false, path: '/' });         // made major change here on the cookies. may break private routes.
                 res.redirect('/client/dashboard');
                 return;
             }
@@ -95,19 +95,37 @@ const Dashboard = (req, res) => {
                         })
                         .catch((error) => {
                             console.error('Error getting booklist:', error);
-                            res.render("./dashboards/client.ejs", { booklist: [] });
+                            res.render("./dashboards/client.ejs", { booklist: [], 
+                                NumberofCopies: 0,
+                                NumberofCopiesAvailable: 0,
+                                NumberofCopiesBorrowed: 0,
+                                transactions: [],
+                                displayList: [], 
+                            });
                             return;
                         });
                 })
                 .catch((error) => {
                     console.error('Error getting booklist:', error);
-                    res.render("./dashboards/client.ejs", { booklist: [] });
+                    res.render("./dashboards/client.ejs", { booklist: [], 
+                        NumberofCopies: 0,
+                        NumberofCopiesAvailable: 0,
+                        NumberofCopiesBorrowed: 0,
+                        transactions: [],
+                        displayList: [],
+                    });
                     return;
                 });
         })
         .catch((error) => {
             console.error('Error getting booklist:', error);
-            res.render("./dashboards/client.ejs", { booklist: [] });
+            res.render("./dashboards/client.ejs", { booklist: [], 
+                NumberofCopies: 0,
+                NumberofCopiesAvailable: 0,
+                NumberofCopiesBorrowed: 0,
+                transactions: [],
+                displayList: [], 
+            });
             return;
         });
 };
@@ -224,7 +242,7 @@ const CheckIn = (req, res) => {
     const query = `
         SELECT *
         FROM TRANSACTIONS
-        WHERE ClientID = '${username}' AND B_Id = '${bookID}' AND CheckOutAccepted = 1 AND CheckInAccepted = 1;
+        WHERE ClientID = '${username}' AND B_Id = '${bookID}' AND CheckOutAccepted = 1 AND CheckInAccepted IS NULL;
     `;
     const query2 = `
         UPDATE TRANSACTIONS

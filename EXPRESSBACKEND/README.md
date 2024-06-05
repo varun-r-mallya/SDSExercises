@@ -20,7 +20,7 @@
 - search functionality with dynamic search (kind of &#10004;) Implemented on frontend
 - SQL JOIN will be used     &#10004;
 
-# Instruction to Run
+# Instructions to Run
 - Create a mariaDB database user and add a password to it (Also add to <code>.env</code>)
 - Create a database and add it's name to the <code>.env</code>
 - Run the queries in the database from <code>queries_Used.sql</code>
