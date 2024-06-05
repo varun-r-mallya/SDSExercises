@@ -26,7 +26,8 @@ function connectToSQL() {
         host: 'localhost',
         user: process.env.DBUSER,
         password: process.env.DBPASS,
-        database: process.env.DBNAME
+        database: process.env.DBNAME,
+        multipleStatements: true
     });
 
     db.connect((err) => {

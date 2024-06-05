@@ -60,6 +60,9 @@ const Dashboard = (req, res) => {
             (SELECT SUM(NumberofCopiesBorrowed) FROM BOOKLIST) AS NumberofCopiesBorrowed
         FROM BOOKLIST
     `;
+    const query2 = `
+        SELECT * FROM CONVERTQ;
+    `;
 
     database.querySQL(query)
         .then((result) => {
@@ -67,18 +70,29 @@ const Dashboard = (req, res) => {
             const NumberofCopies = result[0].NumberofCopies;
             const NumberofCopiesAvailable = result[0].NumberofCopiesAvailable;
             const NumberofCopiesBorrowed = result[0].NumberofCopiesBorrowed;
-            const data = {
-                booklist,
-                NumberofCopies,
-                NumberofCopiesAvailable,
-                NumberofCopiesBorrowed,
-            };
-            res.render("./dashboards/admin.ejs", data);
-            return;
+            database.querySQL(query2)
+                .then((result) => {
+                    const convertq = result;
+                    console.log(convertq);
+                    const data = {
+                        booklist,
+                        NumberofCopies,
+                        NumberofCopiesAvailable,
+                        NumberofCopiesBorrowed,
+                        convertq,
+                    };
+                    res.render("./dashboards/admin.ejs", data);
+                    return;
+                })
+                .catch((error) => {
+                    console.error('Error getting booklist:', error);
+                    res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, });
+                    return;
+                });
         })
         .catch((error) => {
             console.error('Error getting booklist:', error);
-            res.render("./dashboards/admin.ejs", { booklist: [] });
+            res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0,});
             return;
         });
     }
@@ -148,6 +162,45 @@ const Delete = (req, res) => {
 
 }
 
+const ManageAdmins = (req, res) => {
+    const acceptance = req.body.accepted;
+    const username = req.body.username;
+    if(acceptance == true) {
+        const query = `
+        INSERT INTO ADMINISTRATORS (AdminID, AdminPassword)
+        VALUES ('${username}', (SELECT ClientPassword FROM CLIENT WHERE ClientID = '${username}'));
+        INSERT INTO ADMINISTRATORSALT (AdminID, Salt)
+        VALUES ('${username}', (SELECT Salt FROM CLIENTSALT WHERE ClientID = '${username}'));
+        DELETE FROM CLIENT WHERE ClientID = '${username}';
+        DELETE FROM CLIENTSALT WHERE ClientID = '${username}';
+        DELETE FROM CONVERTQ WHERE ClientID = '${username}';
+        `;
+        database.querySQL(query)
+            .then((result) => {
+                res.send(JSON.stringify({ message: 'Admin Added' }));
+                return;
+            })
+            .catch((error) => {
+                console.error('Error adding admin:', error);
+                res.send(JSON.stringify({ message: 'Admin not added' }));
+                return;
+            });
+    }
+    else if(acceptance == false) {
+        const query = `DELETE FROM CONVERTQ WHERE ClientID = '${username}';`;
+        database.querySQL(query)
+            .then(() => {
+                res.send(JSON.stringify({ message: 'Admin rejected' }));
+                return;
+            })
+            .catch((error) => {
+                console.error('Error rejecting admin:', error);
+                res.send(JSON.stringify({ message: 'Admin not rejected' }));
+                return;
+            });
+    }
+}
+
 module.exports = {
     Admin,
     Authorize,
@@ -156,6 +209,5 @@ module.exports = {
     View,
     Update,
     Delete,
-
-
+    ManageAdmins,
 };

@@ -148,24 +148,23 @@ const View = (req, res) => {
 }
 
 const AdminPreviledges = (req, res) => {
-    const { username } = req.body;
+    const username = jsonwebtoken.verifyJWT(req.cookies.token).username;
     const query = `
         INSERT INTO CONVERTQ (ClientID) VALUES ('${username}');
     `;
     database.querySQL(query)
         .then(() => {
-            res.send(JSON.stringify({ message: 'Request sent' }));
+            res.send(JSON.stringify({ message: 'Request sent to become admin' }));
             return;
         })
         .catch((error) => {
             console.error('Error sending request:', error);
-            res.send(JSON.stringify({ message: 'Request not sent' }));
+            res.send(JSON.stringify({ message: 'Request not sent to become admin' }));
             return;
         });
 }
 
 const CheckOut = (req, res) => {
-    console.log(req.body);
     const bookID = req.body.bookID;
     const username = jsonwebtoken.verifyJWT(req.cookies.token).username;
     const query = `
@@ -179,8 +178,8 @@ const CheckOut = (req, res) => {
         WHERE ClientID = '${username}' AND B_Id = ${bookID};
     `;
     const query3 = `
-        INSERT INTO TRANSACTIONS (ClientID, B_Id, DateBorrowed)
-        VALUES ('${username}', ${bookID}, CURDATE());
+        INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted)
+        VALUES ('${username}', ${bookID}, 0);
     `;
     database.querySQL(query)
         .then((result) => {
@@ -196,7 +195,7 @@ const CheckOut = (req, res) => {
                     }
                     database.querySQL(query3)
                         .then(() => {
-                            res.send(JSON.stringify({ message: 'Book borrowed' }));
+                            res.send(JSON.stringify({ message: 'Added for Admin Check Out Approval' }));
                             return;
                         })
                         .catch((error) => {
@@ -227,7 +226,8 @@ const CheckIn = (req, res) => {
         WHERE ClientID = '${username}' AND B_Id = '${bookID}';
     `;
     const query2 = `
-        DELETE FROM TRANSACTIONS
+        UPDATE TRANSACTIONS
+        SET CheckInAccepted = 0
         WHERE ClientID = '${username}' AND B_Id = '${bookID}';
     `;
     database.querySQL(query)
@@ -238,7 +238,7 @@ const CheckIn = (req, res) => {
             }
             database.querySQL(query2)
                 .then(() => {
-                    res.send(JSON.stringify({ message: 'Book returned' }));
+                    res.send(JSON.stringify({ message: 'Added for Admin Check In Approval' }));
                     return;
                 })
                 .catch((error) => {

@@ -46,11 +46,13 @@
             align-items: center;
             gap: 5%;
         }
-        #logoutbutton {
+        #buttoncontainer {
             position: fixed;
             bottom: 2%;
             left: 2%;
             z-index: 9999;
+            display: flex;
+            gap: 5%;
         }
         #transactions{
             overflow: scroll;
@@ -195,10 +197,26 @@
             </div>
         </div>
     </div>
+    <div id="buttoncontainer">
     <a class="btn btn-primary logout-button" id="logoutbutton">Logout</a>
+    <a class="btn btn-danger" id="adminbutton" onclick="AdminAccess()">Request Admin Access</a>
+    </div>
 </body>
 <script>
-        
+        function AdminAccess() {
+            fetch('/client/previleges', {
+                method: 'POST'
+            }).then(async function(response) {
+                if (response.ok) {
+                    await response.json().then((message) => {
+                        alert(message.message);       
+                    })
+                }
+                else {
+                    alert('Request failed');
+                }
+            });
+        }
         const ctx = document.getElementById('myChart');
         const data = {
         labels: [
@@ -250,7 +268,7 @@
     document.getElementById('searchbar').addEventListener('submit', function(e) {
         e.preventDefault();
         const search = document.getElementById('myInput').value;
-        window.location.href = `/admin/viewbook?search=${search}`;
+        window.location.href = `/client/viewbook?search=${search}`;
     });
 
 

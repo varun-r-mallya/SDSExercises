@@ -40,7 +40,7 @@ app.post('/admin/addbooks', admin.AddBooks);
 app.post('/admin/deletebooks', admin.Delete);
 app.post('/admin/updatebooks', admin.Update);
 app.get('/admin/viewbook', admin.View);
-// app.post('/admin/manageadmins', admin.ManageAdmins);
+app.post('/admin/manageadmins', admin.ManageAdmins);
 // app.post('/admin/acceptcheckout', admin.AcceptCheckOut);
 // app.post('/admin/acceptcheckin', admin.AcceptCheckIn);
 
@@ -48,7 +48,7 @@ app.get('/admin/viewbook', admin.View);
 //client
 
 app.get('/client/viewbook', client.View);
-app.post('/client/adminpreviledges', client.AdminPreviledges);
+app.post('/client/previleges', client.AdminPreviledges);
 app.post('/client/checkout', client.CheckOut);
 app.post('/client/checkin', client.CheckIn);
 

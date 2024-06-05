@@ -215,28 +215,42 @@
         </div>
         <div class="approval-section">
             <h2>Admin Requests</h2>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 3</h5>
-                    <p class="card-text">Requesting admin access</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 4</h5>
-                    <p class="card-text">Requesting admin access</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
-                </div>
-            </div>
+            <% if(convertq.length == 0) { %>
+                <p>No admin requests</p>
+            <% } else { %>
+            <% for(let i = 0; i < convertq.length; i++) { %>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Client: <%=convertq[i].ClientID%></h5>
+                            <p class="card-text">Requesting admin access</p>
+                            <button class="btn btn-primary" onclick="ApproveAdmin('<%=convertq[i].ClientID%>', true)">Approve</button>
+                            <button class="btn btn-danger" onclick="ApproveAdmin('<%=convertq[i].ClientID%>', false)">Deny</button>
+                        </div>
+                    </div>
+            <% } %>
+            <% } %>
         </div>
     </div>
     </div>
     <a class="btn btn-primary logout-button" id="logoutbutton">Logout</a>
 </body>
 <script>
+        function ApproveAdmin(username, accepted){
+            fetch('/admin/manageadmins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username: username, accepted: accepted})
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = '/admin/dashboard';
+                }
+                else {
+                    alert("Error approving admin request")
+                }
+            });
+        }
         const message = document.getElementById('message');
         document.getElementById('addbooks').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -326,6 +340,8 @@
         const search = document.getElementById('myInput').value;
         window.location.href = `/admin/viewbook?search=${search}`;
     });
+
+
 
 
 

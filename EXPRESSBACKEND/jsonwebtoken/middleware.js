@@ -23,7 +23,7 @@ const Authorize = (req, res, next) => {
 }
 
 const SQLClean = (req, res, next) => {
-    let { title, author, genre, quantity, dueTime } = req.body;
+    let { title, author, genre, quantity, dueTime, username} = req.body;
 
     let search = req.query.search;
     if(!(title === undefined)){
@@ -43,6 +43,9 @@ const SQLClean = (req, res, next) => {
     }
     if(!(search === undefined)){
         req.query.search = search.replace(/[^\w\s]/g, "\\$&");
+    }
+    if(!(username === undefined)){
+        req.body.username = username.replace(/[^\w\s]/g, "\\$&");
     }
     if(quantity < 0){
         res.send(JSON.stringify({ message: 'Invalid quantity' }));

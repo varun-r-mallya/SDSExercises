@@ -158,8 +158,19 @@
             body: JSON.stringify({ bookID })
         };
         fetch('/client/checkout', RequestOptions)
-            .then(response => {alert(response.json().message)})
-            .catch(error => {alert(response.json().message)});
+            .then(async response => {
+                if (response.ok) {
+                    const res = await response.json().then(data => data.message)
+                    console.log(res);
+                    alert(res);
+                    window.location.reload();
+                } else {
+                    await response.json().then(error => {
+                        message.innerText = error.message;
+                    });
+                }
+            
+            })
     }
 
     function CheckIn() {
@@ -172,15 +183,19 @@
             body: JSON.stringify({ bookID })
         };
         fetch('/client/checkin', RequestOptions)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Book checked in successfully');
+            .then(async response => {
+                if (response.ok) {
+                    const res = await response.json().then(data => data.message)
+                    console.log(res);
+                    alert(res);
                     window.location.reload();
                 } else {
-                    alert('Failed to check in book');
+                    await response.json().then(error => {
+                        message.innerText = error.message;
+                    });
                 }
-            });
+            
+            })
     }
     
 </script>
