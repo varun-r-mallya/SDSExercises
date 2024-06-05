@@ -41,8 +41,8 @@ app.post('/admin/deletebooks', admin.Delete);
 app.post('/admin/updatebooks', admin.Update);
 app.get('/admin/viewbook', admin.View);
 app.post('/admin/manageadmins', admin.ManageAdmins);
-// app.post('/admin/acceptcheckout', admin.AcceptCheckOut);
-// app.post('/admin/acceptcheckin', admin.AcceptCheckIn);
+app.post('/admin/acceptcheckout', admin.AcceptCheckOut);
+app.post('/admin/acceptcheckin', admin.AcceptCheckIn);
 
 
 //client

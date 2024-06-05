@@ -65,5 +65,5 @@ CREATE TABLE CONVERTQ (
     primary key(C_Id)
 );
 
-INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted, CheckInAccepted, DateBorrowed, DateReturned) 
-VALUES ("client", 6, 1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY));
+-- INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted, CheckInAccepted, DateBorrowed, DateReturned) 
+-- VALUES ("client", 6, 1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY));

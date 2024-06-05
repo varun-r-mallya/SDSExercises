@@ -63,7 +63,18 @@ const Dashboard = (req, res) => {
     const query2 = `
         SELECT * FROM CONVERTQ;
     `;
-
+    const query3 = `
+        SELECT BOOKLIST.BookName, TRANSACTIONS.*
+        FROM TRANSACTIONS
+        INNER JOIN BOOKLIST ON TRANSACTIONS.B_Id = BOOKLIST.B_Id
+        WHERE DateBorrowed IS NULL AND CheckOutAccepted = 0;
+    `;
+    const query4 = `
+        SELECT BOOKLIST.BookName, TRANSACTIONS.*
+        FROM TRANSACTIONS
+        INNER JOIN BOOKLIST ON TRANSACTIONS.B_Id = BOOKLIST.B_Id
+        WHERE DateReturned IS NULL AND CheckInAccepted = 0 AND CheckOutAccepted = 1;
+    `;
     database.querySQL(query)
         .then((result) => {
             const booklist = result[0].booklist.split(",");
@@ -73,26 +84,36 @@ const Dashboard = (req, res) => {
             database.querySQL(query2)
                 .then((result) => {
                     const convertq = result;
-                    console.log(convertq);
-                    const data = {
-                        booklist,
-                        NumberofCopies,
-                        NumberofCopiesAvailable,
-                        NumberofCopiesBorrowed,
-                        convertq,
-                    };
-                    res.render("./dashboards/admin.ejs", data);
-                    return;
-                })
-                .catch((error) => {
-                    console.error('Error getting booklist:', error);
-                    res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, });
-                    return;
-                });
-        })
+                    database.querySQL(query3)
+                        .then((result) => {
+                            const checkout = result;
+                            database.querySQL(query4)
+                            .then((result) => {
+                                const checkin = result;
+                                const data = {
+                                    booklist,
+                                    NumberofCopies,
+                                    NumberofCopiesAvailable,
+                                    NumberofCopiesBorrowed,
+                                    convertq,
+                                    checkout,
+                                    checkin
+                                };
+                                res.render("./dashboards/admin.ejs", data);
+                                return;
+                            }) 
+                        })
+                        .catch((error) => {
+                            console.error('Error getting booklist:', error);
+                            res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
+                            return;
+                        });
+        
+                    })
+            })
         .catch((error) => {
             console.error('Error getting booklist:', error);
-            res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0,});
+            res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
             return;
         });
     }
@@ -201,6 +222,84 @@ const ManageAdmins = (req, res) => {
     }
 }
 
+const AcceptCheckOut = (req, res) => {
+    const { T_Id, accepted } = req.body;
+    if(accepted == false) {
+        const query = `UPDATE TRANSACTIONS SET DateBorrowed = CURDATE() WHERE T_Id = ${T_Id};`;
+        database.querySQL(query)
+            .then(() => {
+                res.send(JSON.stringify({ message: 'Book checkout rejected' }));
+                return;
+            })
+            .catch((error) => {
+                console.error('Error rejecting book checkout:', error);
+                res.send(JSON.stringify({ message: 'Book checkout not rejected' }));
+                return;
+            });
+    }
+    else if(accepted == true) {
+    const query = `
+        UPDATE TRANSACTIONS
+        SET DateBorrowed = CURDATE(), CheckOutAccepted = 1 
+        WHERE T_Id = ${T_Id};
+        UPDATE BOOKLIST
+        SET NumberofCopiesBorrowed = NumberofCopiesBorrowed + 1,
+        NumberofCopiesAvailable = NumberofCopiesAvailable - 1
+        WHERE B_Id = (SELECT B_Id FROM TRANSACTIONS WHERE T_Id = ${T_Id});
+
+    `;
+    database.querySQL(query)
+        .then(() => {
+            res.send(JSON.stringify({ message: 'Book checked out' }));
+            return;
+        })
+        .catch((error) => {
+            console.error('Error checking out book:', error);
+            res.send(JSON.stringify({ message: 'Book not checked out' }));
+            return;
+        });
+    }
+}
+
+const AcceptCheckIn = (req, res) => {
+    const { T_Id, accepted} = req.body;
+    if(accepted == false) {
+        const query = `UPDATE TRANSACTIONS SET DateReturned = CURDATE() WHERE T_Id = ${T_Id}';`;
+        database.querySQL(query)
+            .then(() => {
+                res.send(JSON.stringify({ message: 'Book checkout rejected' }));
+                return;
+            })
+            .catch((error) => {
+                console.error('Error rejecting book checkout:', error);
+                res.send(JSON.stringify({ message: 'Book checkout not rejected' }));
+                return;
+            });
+    }
+    else if(accepted == true) {
+    const query = `
+        UPDATE TRANSACTIONS
+        SET DateReturned = CURDATE(), CheckInAccepted = 1 
+        WHERE T_Id = ${T_Id};
+        UPDATE BOOKLIST
+        SET NumberofCopiesAvailable = NumberofCopiesAvailable + 1,
+        NumberofCopiesBorrowed = NumberofCopiesBorrowed - 1
+        WHERE B_Id = (SELECT B_Id FROM TRANSACTIONS WHERE T_Id = ${T_Id});
+    `;
+    database.querySQL(query)
+        .then(() => {
+            res.send(JSON.stringify({ message: 'Book checked out' }));
+            return;
+        })
+        .catch((error) => {
+            console.error('Error checking out book:', error);
+            res.send(JSON.stringify({ message: 'Book not checked out' }));
+            return;
+        });
+    }
+
+}
+
 module.exports = {
     Admin,
     Authorize,
@@ -210,4 +309,6 @@ module.exports = {
     Update,
     Delete,
     ManageAdmins,
+    AcceptCheckOut,
+    AcceptCheckIn
 };

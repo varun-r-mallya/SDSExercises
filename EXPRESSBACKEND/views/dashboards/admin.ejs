@@ -176,42 +176,36 @@
         <div class="approval-section">
             <div class="checkins">
             <h2>Check-in Approvals</h2>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 1</h5>
-                    <p class="card-text">Requesting check-in for Book Title 1</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
+            <% if(checkin.length == 0) { %>
+                <p>No check-in requests</p>
+            <% } else %>
+            <% for(let i = 0; i < checkin.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= checkin[i].ClientID %></h5>
+                        <p class="card-text">Requesting check-in for <%= checkin[i].BookName %></p>
+                        <button class="btn btn-primary" onclick="HandleCheckIn(Number('<%=checkin[i].T_Id%>'), true)">Approve</button>
+                        <button class="btn btn-danger" onclick="HandleCheckIn(Number('<%=checkin[i].T_Id%>'), false)">Deny</button>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 2</h5>
-                    <p class="card-text">Requesting check-in for Book Title 2</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
-                </div>
-            </div>
+            <% } %>
         </div>
         <div class="approval-section">
             <div class="checkins">
             <h2>Check-out Approvals</h2>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 1</h5>
-                    <p class="card-text">Requesting check-out for Book Title 1</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
+            <% if(checkout.length == 0) { %>
+                <p>No check-out requests</p>
+            <% } else %>
+            <% for(let i = 0; i < checkout.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= checkout[i].ClientID %></h5>
+                        <p class="card-text">Requesting check-out for <%= checkout[i].BookName %></p>
+                        <button class="btn btn-primary" onclick="HandleCheckOut(Number('<%=checkout[i].T_Id%>'), true)">Approve</button>
+                        <button class="btn btn-danger" onclick="HandleCheckOut(Number('<%=checkout[i].T_Id%>'), false)">Deny</button>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Client Name 2</h5>
-                    <p class="card-text">Requesting check-out for Book Title 2</p>
-                    <button class="btn btn-primary">Approve</button>
-                    <button class="btn btn-danger">Deny</button>
-                </div>
-            </div>
+            <% } %>
         </div>
         <div class="approval-section">
             <h2>Admin Requests</h2>
@@ -235,6 +229,38 @@
     <a class="btn btn-primary logout-button" id="logoutbutton">Logout</a>
 </body>
 <script>
+        function HandleCheckIn(T_Id, accepted){
+            fetch('/admin/acceptcheckin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({T_Id: T_Id, accepted: accepted})
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = '/admin/dashboard';
+                }
+                else {
+                    alert("Error approving check-in request")
+                }
+            });
+        }
+        function HandleCheckOut(T_Id, accepted){
+            fetch('/admin/acceptcheckout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({T_Id: T_Id, accepted: accepted})
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = '/admin/dashboard';
+                }
+                else {
+                    alert("Error approving check-in request")
+                }
+            });
+        }
         function ApproveAdmin(username, accepted){
             fetch('/admin/manageadmins', {
                 method: 'POST',

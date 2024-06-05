@@ -167,6 +167,7 @@ const AdminPreviledges = (req, res) => {
 const CheckOut = (req, res) => {
     const bookID = req.body.bookID;
     const username = jsonwebtoken.verifyJWT(req.cookies.token).username;
+    const T_Id = req.body.T_Id;
     const query = `
         SELECT NumberofCopiesAvailable
         FROM BOOKLIST
@@ -175,7 +176,7 @@ const CheckOut = (req, res) => {
     const query2 = `
         SELECT *
         FROM TRANSACTIONS
-        WHERE ClientID = '${username}' AND B_Id = ${bookID};
+        WHERE ClientID = '${username}' AND B_Id = ${bookID} AND CheckOutAccepted = 1 AND CheckInAccepted IS NULL;
     `;
     const query3 = `
         INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted)
@@ -223,7 +224,7 @@ const CheckIn = (req, res) => {
     const query = `
         SELECT *
         FROM TRANSACTIONS
-        WHERE ClientID = '${username}' AND B_Id = '${bookID}';
+        WHERE ClientID = '${username}' AND B_Id = '${bookID}' AND CheckOutAccepted = 1 AND CheckInAccepted = 1;
     `;
     const query2 = `
         UPDATE TRANSACTIONS
