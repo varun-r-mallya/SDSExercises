@@ -1,0 +1,4 @@
+.env
+LMS.session.sql
+.vscode/
+node_modules/
