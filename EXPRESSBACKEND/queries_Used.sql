@@ -64,6 +64,3 @@ CREATE TABLE CONVERTQ (
     FOREIGN KEY (ClientID) REFERENCES CLIENT(ClientID),
     primary key(C_Id)
 );
-
--- INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted, CheckInAccepted, DateBorrowed, DateReturned) 
--- VALUES ("client", 6, 1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY));
