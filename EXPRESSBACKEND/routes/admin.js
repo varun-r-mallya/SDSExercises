@@ -67,13 +67,13 @@ const Dashboard = (req, res) => {
         SELECT BOOKLIST.BookName, TRANSACTIONS.*
         FROM TRANSACTIONS
         INNER JOIN BOOKLIST ON TRANSACTIONS.B_Id = BOOKLIST.B_Id
-        WHERE DateBorrowed IS NULL AND CheckOutAccepted = 0;
+        WHERE CheckOutAccepted IS NULL;
     `;
     const query4 = `
         SELECT BOOKLIST.BookName, TRANSACTIONS.*
         FROM TRANSACTIONS
         INNER JOIN BOOKLIST ON TRANSACTIONS.B_Id = BOOKLIST.B_Id
-        WHERE DateReturned IS NULL AND CheckInAccepted = 0 AND CheckOutAccepted = 1;
+        WHERE CheckInAccepted = 0 AND CheckOutAccepted = 1;
     `;
     database.querySQL(query)
         .then((result) => {
@@ -225,7 +225,7 @@ const ManageAdmins = (req, res) => {
 const AcceptCheckOut = (req, res) => {
     const { T_Id, accepted } = req.body;
     if(accepted == false) {
-        const query = `UPDATE TRANSACTIONS SET DateBorrowed = CURDATE() WHERE T_Id = ${T_Id};`;
+        const query = `UPDATE TRANSACTIONS SET DateBorrowed = CURDATE(), CheckOutAccepted = 0 WHERE T_Id = ${T_Id};`;
         database.querySQL(query)
             .then(() => {
                 res.send(JSON.stringify({ message: 'Book checkout rejected' }));
@@ -267,33 +267,42 @@ const AcceptCheckIn = (req, res) => {
         const query = `UPDATE TRANSACTIONS SET DateReturned = CURDATE() WHERE T_Id = ${T_Id}';`;
         database.querySQL(query)
             .then(() => {
-                res.send(JSON.stringify({ message: 'Book checkout rejected' }));
+                res.send(JSON.stringify({ message: 'Book checkin rejected' }));
                 return;
             })
             .catch((error) => {
-                console.error('Error rejecting book checkout:', error);
-                res.send(JSON.stringify({ message: 'Book checkout not rejected' }));
+                console.error('Error rejecting book checkin:', error);
+                res.send(JSON.stringify({ message: 'Book checkin not rejected' }));
                 return;
             });
     }
     else if(accepted == true) {
     const query = `
         UPDATE TRANSACTIONS
-        SET DateReturned = CURDATE(), CheckInAccepted = 1 
+        SET DateReturned = CURDATE(), CheckInAccepted = 1
         WHERE T_Id = ${T_Id};
         UPDATE BOOKLIST
         SET NumberofCopiesAvailable = NumberofCopiesAvailable + 1,
         NumberofCopiesBorrowed = NumberofCopiesBorrowed - 1
         WHERE B_Id = (SELECT B_Id FROM TRANSACTIONS WHERE T_Id = ${T_Id});
+        UPDATE TRANSACTIONS
+            SET OverDueFine = ((DATEDIFF(CURDATE(), DateBorrowed) - 
+                (SELECT NumberofDays FROM BOOKLIST WHERE B_Id = 
+                    (SELECT B_Id FROM TRANSACTIONS WHERE T_Id = ${T_Id}))) *
+                        ${process.env.FINEPERDAY})
+            WHERE T_Id = ${T_Id} AND DATEDIFF(CURDATE(), DateBorrowed) >
+                (SELECT NumberofDays FROM BOOKLIST WHERE B_Id = 
+                    (SELECT B_Id FROM TRANSACTIONS WHERE T_Id = ${T_Id}));
+        
     `;
     database.querySQL(query)
         .then(() => {
-            res.send(JSON.stringify({ message: 'Book checked out' }));
+            res.send(JSON.stringify({ message: 'Book checked in' }));
             return;
         })
         .catch((error) => {
-            console.error('Error checking out book:', error);
-            res.send(JSON.stringify({ message: 'Book not checked out' }));
+            console.error('Error checking in book:', error);
+            res.send(JSON.stringify({ message: 'Book not checked in' }));
             return;
         });
     }

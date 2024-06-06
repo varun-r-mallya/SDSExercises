@@ -56,7 +56,8 @@ const Dashboard = (req, res) => {
             (SELECT GROUP_CONCAT(BookName) FROM BOOKLIST) AS booklist,
             (SELECT SUM(NumberofCopies) FROM BOOKLIST) AS NumberofCopies,
             (SELECT SUM(NumberofCopiesAvailable) FROM BOOKLIST) AS NumberofCopiesAvailable,
-            (SELECT SUM(NumberofCopiesBorrowed) FROM BOOKLIST) AS NumberofCopiesBorrowed
+            (SELECT SUM(NumberofCopiesBorrowed) FROM BOOKLIST) AS NumberofCopiesBorrowed,
+            (SELECT SUM(OverDueFine) FROM TRANSACTIONS WHERE ClientID = '${jsonwebtoken.verifyJWT(req.cookies.token).username}') AS OverDueFine
         FROM BOOKLIST 
         ;`;
     const query2 = `
@@ -76,6 +77,7 @@ const Dashboard = (req, res) => {
             const NumberofCopies = result[0].NumberofCopies;
             const NumberofCopiesAvailable = result[0].NumberofCopiesAvailable;
             const NumberofCopiesBorrowed = result[0].NumberofCopiesBorrowed;
+            const OverDueFine = result[0].OverDueFine;
             database.querySQL(query2)
                 .then((result) => {
                     const transactions = result;
@@ -89,6 +91,7 @@ const Dashboard = (req, res) => {
                                 NumberofCopiesBorrowed,
                                 transactions,
                                 displayList,
+                                OverDueFine
                             };
                             res.render("./dashboards/client.ejs", data);
                             return;
@@ -194,11 +197,11 @@ const CheckOut = (req, res) => {
     const query2 = `
         SELECT *
         FROM TRANSACTIONS
-        WHERE ClientID = '${username}' AND B_Id = ${bookID} AND CheckOutAccepted = 1 AND CheckInAccepted IS NULL;
+        WHERE ClientID = '${username}' AND B_Id = ${bookID} AND ((CheckOutAccepted = 1 AND CheckInAccepted IS NULL) OR (CheckOutAccepted = 1 AND CheckInAccepted = 0) OR (CheckOutAccepted IS NULL AND CheckInAccepted IS NULL));
     `;
     const query3 = `
-        INSERT INTO TRANSACTIONS (ClientID, B_Id, CheckOutAccepted)
-        VALUES ('${username}', ${bookID}, 0);
+        INSERT INTO TRANSACTIONS (ClientID, B_Id)
+        VALUES ('${username}', ${bookID});
     `;
     database.querySQL(query)
         .then((result) => {
@@ -242,12 +245,12 @@ const CheckIn = (req, res) => {
     const query = `
         SELECT *
         FROM TRANSACTIONS
-        WHERE ClientID = '${username}' AND B_Id = '${bookID}' AND CheckOutAccepted = 1 AND CheckInAccepted IS NULL;
+        WHERE ClientID = '${username}' AND B_Id = '${bookID}' AND CheckOutAccepted = 1 AND CheckInAccepted IS NULL OR CheckInAccepted != 1;
     `;
     const query2 = `
         UPDATE TRANSACTIONS
         SET CheckInAccepted = 0
-        WHERE ClientID = '${username}' AND B_Id = '${bookID}';
+        WHERE T_Id = (SELECT MAX(T_Id) FROM TRANSACTIONS WHERE ClientID = '${username}' AND B_Id = ${bookID});
     `;
     database.querySQL(query)
         .then((result) => {

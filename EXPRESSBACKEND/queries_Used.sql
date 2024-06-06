@@ -52,6 +52,7 @@ CREATE TABLE TRANSACTIONS (
     CheckInAccepted boolean DEFAULT NULL,
     DateBorrowed date DEFAULT NULL,
     DateReturned date DEFAULT NULL,
+    OverDueFine int(10) unsigned DEFAULT 0,
     primary key(T_Id),
     FOREIGN KEY (ClientID) REFERENCES CLIENT(ClientID),
     FOREIGN KEY (B_Id) REFERENCES BOOKLIST(B_Id)

@@ -185,7 +185,7 @@
                         <h5 class="card-title"><%= checkin[i].ClientID %></h5>
                         <p class="card-text">Requesting check-in for <%= checkin[i].BookName %></p>
                         <button class="btn btn-primary" onclick="HandleCheckIn(Number('<%=checkin[i].T_Id%>'), true)">Approve</button>
-                        <button class="btn btn-danger" onclick="HandleCheckIn(Number('<%=checkin[i].T_Id%>'), false)">Deny</button>
+                        <!-- <button class="btn btn-danger" onclick="HandleCheckIn(Number('<%=checkin[i].T_Id%>'), false)">Deny</button> -->
                     </div>
                 </div>
             <% } %>
