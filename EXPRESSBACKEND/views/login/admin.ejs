@@ -157,8 +157,12 @@
                 message.innerText = error.message;
             }
             } else {
-            const error = await response.json();
-            message.innerText = error.message;
+                const error = await response.json();
+                message.innerText = error.message;
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            
             }
         });
     </script>

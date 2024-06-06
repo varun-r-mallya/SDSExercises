@@ -45,7 +45,7 @@ const Authorize = (req, res) => {
         })
         .catch((error) => {
             console.error('Error authenticating user:', error);
-            res.send(JSON.stringify({ message: 'Login failed' }));
+            res.status(500).send(JSON.stringify({ message: 'Server Error' }));
             return;
         });
 
@@ -104,7 +104,6 @@ const Dashboard = (req, res) => {
                             }) 
                         })
                         .catch((error) => {
-                            // console.error('Error getting booklist:', error);
                             res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
                             return;
                         });
@@ -117,7 +116,7 @@ const Dashboard = (req, res) => {
             else
             {
                 console.error('Error getting booklist:', error);
-                res.render('./error/servererror.ejs');
+                res.status(500).render('./error/servererror.ejs');
             }
             return;
         });
@@ -132,7 +131,7 @@ const AddBooks = (req, res) => {
         })
         .catch((error) => {
             console.error('Error adding book:', error);
-            res.send(JSON.stringify({ message: 'Book not added' }));
+            res.status(500).send(JSON.stringify({ message: 'Book not added' }));
             return;
         });
 }

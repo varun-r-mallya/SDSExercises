@@ -44,6 +44,7 @@ const Authorize = (req, res) => {
             }
         })
         .catch((error) => {
+
             console.error('Error authenticating user:', error);
             res.send(JSON.stringify({ message: 'Login failed' }));
             return;
