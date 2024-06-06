@@ -43,6 +43,7 @@ app.get('/admin/viewbook', admin.View);
 app.post('/admin/manageadmins', admin.ManageAdmins);
 app.post('/admin/acceptcheckout', admin.AcceptCheckOut);
 app.post('/admin/acceptcheckin', admin.AcceptCheckIn);
+app.post('/admin/handlefine', admin.HandleFine);
 
 
 //client

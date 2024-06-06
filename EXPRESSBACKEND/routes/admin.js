@@ -135,15 +135,26 @@ const AddBooks = (req, res) => {
 const View = (req, res) => {
     const title = req.query.search;
     const query = `SELECT * FROM BOOKLIST WHERE BookName = '${title}'`;
+    const query2 = `SELECT * FROM TRANSACTIONS WHERE OverDueFine != 0 AND B_Id = (SELECT B_Id FROM BOOKLIST WHERE BookName = '${title}')`
     database.querySQL(query)
         .then((result) => {
             if (result.length === 0) {
                 res.render('./search/booknotfound.ejs', {name: title});
                 return;
             }
-            // console.log(result[0]);
-            res.render('./search/admin.ejs', { book: result[0] });
-            return;
+            const book = result[0];
+            database.querySQL(query2)
+            .then((result) => {
+                const Fines = result;
+                res.render('./search/admin.ejs', { book, Fines });
+                return;
+            })
+            .catch((error) => {
+                console.error('Error viewing book:', error);
+                res.render('./error/servererror.ejs');
+                return;
+            });
+            
         })
         .catch((error) => {
             console.error('Error viewing book:', error);
@@ -309,6 +320,20 @@ const AcceptCheckIn = (req, res) => {
 
 }
 
+const HandleFine = (req, res) => {
+    const {T_Id} = req.body;
+    const query = `UPDATE TRANSACTIONS SET OverDueFine = 0 WHERE T_Id = ${T_Id}`;
+    database.querySQL(query)
+    .then(() => {
+        res.send(JSON.stringify({ message: 'Fine paid' }));
+        return;
+    })
+    .catch((error) => {
+        console.error('Error paying fine:', error);
+        res.send(JSON.stringify({ message: 'Fine not paid. Server Error' }));
+    })
+}
+
 module.exports = {
     Admin,
     Authorize,
@@ -319,5 +344,6 @@ module.exports = {
     Delete,
     ManageAdmins,
     AcceptCheckOut,
-    AcceptCheckIn
+    AcceptCheckIn,
+    HandleFine
 };

@@ -68,6 +68,23 @@
             left: 2%;
             z-index: 9999;
         }
+        .card {
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .overduefines {
+            margin: 2%;
+            overflow-y:scroll;
+            height: 30vh;
+            overflow-x: hidden;
+
+        }
 
     </style>
 </head>
@@ -123,11 +140,49 @@
                 </form>
             </div>
         </div>
+        <div class="overduefines">
+            <h2>Overdue Fines</h2>
+            <% if(Fines.length == 0) { %>
+                <p>No Overdue fines</p>
+            <% } else %>
+            <% for(let i = 0; i < Fines.length; i++) { %>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= Fines[i].ClientID %></h5>
+                        <p class="card-text">Fine Amount: &#8377;<%= Fines[i].OverDueFine %></p>
+                        <button class="btn btn-primary" onclick="HandleFine(Number('<%=Fines[i].T_Id%>'), true)">Paid</button>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     <div id="logoutbutton" style="flex-direction: row;">
         <button type="button" class="btn btn-danger" onclick="window.location.href='/admin/dashboard'">Back</button>
     </div>
 </body>
 <script>
+        function HandleFine(T_Id){
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ T_Id: T_Id })
+            }
+            fetch('/admin/handlefine', requestOptions)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            alert(data.message);
+                        });
+                        window.location.reload();
+                    } else {
+                        response.json().then(error => {
+                            const message = document.getElementById('message');
+                            alert(error.message);
+                        });
+                    }
+                });
+        }
 
         function deleteBook() {
             const bookID = '<%=book.B_Id%>';
