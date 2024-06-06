@@ -16,7 +16,7 @@
 
 ### Additional features include
 - safeguards against SQL injection      &#10004;
-- system that manages overdue fines 
+- system that manages overdue fines &#10004;
 - search functionality with dynamic search (kind of &#10004;) Implemented on frontend
 - SQL JOIN will be used     &#10004;
 
