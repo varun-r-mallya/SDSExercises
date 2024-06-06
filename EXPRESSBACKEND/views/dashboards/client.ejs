@@ -246,24 +246,12 @@
                 cutout: '50%',
             }
         });
-    function deleteAllCookies() {
-        document.cookie.split(';').forEach(cookie => {
-            const eqPos = cookie.indexOf('=');
-            const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.getElementById('logoutbutton').addEventListener('click', () => {
+        document.cookie.split(";").forEach(function(c) {
+        var name = c.split("=")[0].trim();
+        document.cookie = name + "=undefined; expires=" + new Date().toUTCString() + "; path=/";
         });
-    }
-
-    document.getElementById('logoutbutton').addEventListener('click', function() {
-        fetch('/logout', {
-            method: 'POST'
-        }).then(function(response) {
-            if (response.ok) {
-                deleteAllCookies();
-                window.location.href = '/';
-                
-            }
-        });
+        window.location.replace('/');
     });
 
     document.getElementById('searchbar').addEventListener('submit', function(e) {

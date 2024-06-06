@@ -104,7 +104,7 @@ const Dashboard = (req, res) => {
                             }) 
                         })
                         .catch((error) => {
-                            console.error('Error getting booklist:', error);
+                            // console.error('Error getting booklist:', error);
                             res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
                             return;
                         });
@@ -112,8 +112,13 @@ const Dashboard = (req, res) => {
                     })
             })
         .catch((error) => {
-            console.error('Error getting booklist:', error);
-            res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
+            if(error.message.includes("booklist"))
+                res.render("./dashboards/admin.ejs", { booklist: [], convertq: [], NumberofCopies: 0, NumberofCopiesAvailable: 0, NumberofCopiesBorrowed: 0, checkout: [], checkin: []});
+            else
+            {
+                console.error('Error getting booklist:', error);
+                res.render('./error/servererror.ejs');
+            }
             return;
         });
     }

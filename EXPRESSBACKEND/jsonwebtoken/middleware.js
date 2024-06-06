@@ -13,11 +13,12 @@ const Authorize = (req, res, next) => {
         return;
     }
     if(req.url.includes('admin') && (decoded.user_type !== 'admin')){
+        res.clearCookie('token');
         res.redirect('/noaccess');
         return;
     }
     if(req.url.includes('client') && (decoded.user_type !== 'client')){
-
+        res.clearCookie('token');
         res.redirect('/noaccess');
         return;
     }
