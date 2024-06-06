@@ -72,6 +72,17 @@ const Save = (req, res) => {
                 });
                 
             })
+            .catch((error) => {
+                console.error('Error registering user:', error);
+                if(error.errno === 1062)
+                {
+                    res.send(JSON.stringify({ message: 'User already exists' }));
+                    return;
+                }
+                else
+                res.send(JSON.stringify({ message: 'User registration failed' }));
+                return;
+            });
         }
     })
     .catch((error) => {

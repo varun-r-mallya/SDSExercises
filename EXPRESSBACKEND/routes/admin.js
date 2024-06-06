@@ -208,9 +208,9 @@ const ManageAdmins = (req, res) => {
         VALUES ('${username}', (SELECT ClientPassword FROM CLIENT WHERE ClientID = '${username}'));
         INSERT INTO ADMINISTRATORSALT (AdminID, Salt)
         VALUES ('${username}', (SELECT Salt FROM CLIENTSALT WHERE ClientID = '${username}'));
-        DELETE FROM CLIENT WHERE ClientID = '${username}';
         DELETE FROM CLIENTSALT WHERE ClientID = '${username}';
         DELETE FROM CONVERTQ WHERE ClientID = '${username}';
+        DELETE FROM CLIENT WHERE ClientID = '${username}';
         `;
         database.querySQL(query)
             .then((result) => {

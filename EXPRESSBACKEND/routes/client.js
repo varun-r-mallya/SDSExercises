@@ -103,7 +103,8 @@ const Dashboard = (req, res) => {
                                 NumberofCopiesAvailable: 0,
                                 NumberofCopiesBorrowed: 0,
                                 transactions: [],
-                                displayList: [], 
+                                displayList: [],
+                                OverDueFine: 0 
                             });
                             return;
                         });
@@ -116,6 +117,7 @@ const Dashboard = (req, res) => {
                         NumberofCopiesBorrowed: 0,
                         transactions: [],
                         displayList: [],
+                        OverDueFine: 0
                     });
                     return;
                 });
@@ -127,7 +129,8 @@ const Dashboard = (req, res) => {
                 NumberofCopiesAvailable: 0,
                 NumberofCopiesBorrowed: 0,
                 transactions: [],
-                displayList: [], 
+                displayList: [],
+                OverDueFine: 0
             });
             return;
         });
