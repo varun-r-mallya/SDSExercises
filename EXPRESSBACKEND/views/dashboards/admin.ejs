@@ -268,12 +268,14 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({username: username, accepted: accepted})
-            }).then(function(response) {
+            }).then(async function(response) {
                 if (response.ok) {
                     window.location.href = '/admin/dashboard';
                 }
                 else {
-                    alert("Error approving admin request")
+                    const message = await response.json();
+                    alert(message.message);
+                    window.location.href = '/admin/dashboard';
                 }
             });
         }

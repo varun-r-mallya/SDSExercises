@@ -131,7 +131,7 @@ const AddBooks = (req, res) => {
         })
         .catch((error) => {
             console.error('Error adding book:', error);
-            res.status(500).send(JSON.stringify({ message: 'Book not added' }));
+            res.status(500).render('./error/servererror.ejs');
             return;
         });
 }
@@ -178,7 +178,7 @@ const Update = (req, res) => {
         })
         .catch((error) => {
             console.error('Error updating book:', error);
-            res.send(JSON.stringify({ message: 'Book not updated' }));
+            res.status(500).render('./error/servererror.ejs');
             return;
         });
 }
@@ -192,7 +192,7 @@ const Delete = (req, res) => {
         })
         .catch((error) => {
             console.error('Error deleting book:', error);
-            res.send(JSON.stringify({ message: 'Book not deleted' }));
+            res.status(500).render('./error/servererror.ejs');
             return;
         });
 
@@ -217,9 +217,27 @@ const ManageAdmins = (req, res) => {
                 return;
             })
             .catch((error) => {
-                console.error('Error adding admin:', error);
-                res.send(JSON.stringify({ message: 'Admin not added' }));
-                return;
+                if(error.errno === 1062)
+                    {
+                        
+                        const query = `DELETE FROM CONVERTQ WHERE ClientID = '${username}';`;
+                        database.querySQL(query)
+                            .then(() => {
+                                res.status(400).send(JSON.stringify({ message: 'Username same as another admin. System Error' }));
+                                return;
+                            })
+                            .catch((error) => {
+                                console.error('Error rejecting admin:', error);
+                                res.status(500).render('./error/servererror.ejs');
+                                return;
+                            });
+                    }
+                    else
+                    {
+                        console.error('Error registering user:', error);    
+                        res.status(500).render('./error/servererror.ejs');
+                        return;
+                    }
             });
     }
     else if(acceptance == false) {
@@ -231,7 +249,7 @@ const ManageAdmins = (req, res) => {
             })
             .catch((error) => {
                 console.error('Error rejecting admin:', error);
-                res.send(JSON.stringify({ message: 'Admin not rejected' }));
+                res.status(500).render('./error/servererror.ejs');
                 return;
             });
     }
@@ -248,7 +266,7 @@ const AcceptCheckOut = (req, res) => {
             })
             .catch((error) => {
                 console.error('Error rejecting book checkout:', error);
-                res.send(JSON.stringify({ message: 'Book checkout not rejected' }));
+                res.status(500).render('./error/servererror.ejs');
                 return;
             });
     }
@@ -270,7 +288,7 @@ const AcceptCheckOut = (req, res) => {
         })
         .catch((error) => {
             console.error('Error checking out book:', error);
-            res.send(JSON.stringify({ message: 'Book not checked out' }));
+            res.status(500).render('./error/servererror.ejs');
             return;
         });
     }
@@ -287,7 +305,7 @@ const AcceptCheckIn = (req, res) => {
             })
             .catch((error) => {
                 console.error('Error rejecting book checkin:', error);
-                res.send(JSON.stringify({ message: 'Book checkin not rejected' }));
+                res.status(500).render('./error/servererror.ejs');
                 return;
             });
     }
@@ -317,7 +335,7 @@ const AcceptCheckIn = (req, res) => {
         })
         .catch((error) => {
             console.error('Error checking in book:', error);
-            res.send(JSON.stringify({ message: 'Book not checked in' }));
+            res.status(500).render('./error/servererror.ejs');
             return;
         });
     }
@@ -334,7 +352,7 @@ const HandleFine = (req, res) => {
     })
     .catch((error) => {
         console.error('Error paying fine:', error);
-        res.send(JSON.stringify({ message: 'Fine not paid. Server Error' }));
+        res.status(500).render('./error/servererror.ejs');
     })
 }
 
