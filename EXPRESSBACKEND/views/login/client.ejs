@@ -114,6 +114,7 @@
         if (document.cookie.includes('token')) {
             window.location.href = '/client/dashboard';
         }
+        localStorage.setItem('type', 'admin');
         const stars = document.getElementById('stars');
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');

@@ -184,17 +184,34 @@ const Update = (req, res) => {
 }
 
 const Delete = (req, res) => {
-    const query = `DELETE FROM BOOKLIST WHERE B_Id = '${req.body.bookID}' `;
-    database.querySQL(query)
-        .then(() => {
-            res.send(JSON.stringify({ message: 'Book deleted' }));
-            return;
-        })
-        .catch((error) => {
-            console.error('Error deleting book:', error);
-            res.status(500).render('./error/servererror.ejs');
-            return;
-        });
+    const query1 = `SELECT NumberofCopiesAvailable, NumberofCopies FROM BOOKLIST WHERE B_Id = '${req.body.bookID}'`;
+    database.querySQL(query1)
+        .then((result) => {
+            if(result[0].NumberofCopiesAvailable !== result[0].NumberofCopies)
+            {
+                res.status(400).send(JSON.stringify({ message: 'Book has been checked out. Cannot delete' }));
+                return;
+            }
+            else
+            {
+                const query = `DELETE FROM BOOKLIST WHERE B_Id = '${req.body.bookID}' AND NumberofCopiesAvailable = NumberofCopies`;
+                database.querySQL(query)
+                    .then((result) => {
+                        res.send(JSON.stringify({ message: 'Book deleted' }));
+                        return;
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting book:', error);
+                        res.status(500).render('./error/servererror.ejs');
+                        return;
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error deleting book:', error);
+                res.status(500).render('./error/servererror.ejs');
+                return;
+            });
 
 }
 
@@ -297,7 +314,8 @@ const AcceptCheckOut = (req, res) => {
 const AcceptCheckIn = (req, res) => {
     const { T_Id, accepted} = req.body;
     if(accepted == false) {
-        const query = `UPDATE TRANSACTIONS SET DateReturned = CURDATE() WHERE T_Id = ${T_Id}';`;
+        // const query = `UPDATE TRANSACTIONS SET DateReturned = CURDATE() WHERE T_Id = ${T_Id}';`;
+        const query = `UPDATE TRANSACTIONS SET CheckInAccepted = NULL WHERE T_Id = ${T_Id};`;
         database.querySQL(query)
             .then(() => {
                 res.send(JSON.stringify({ message: 'Book checkin rejected' }));
